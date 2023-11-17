@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: web
+    image: golang:1.21.0
+    working_dir: /usr/src/app
+    entrypoint: /bin/bash
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/usr/src/app
+    tty: true
