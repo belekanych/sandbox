@@ -1,7 +1,15 @@
 package services
 
+import "log"
+
 type TaskService struct {
 	items []string
+}
+
+func CreateNewTaskService() *TaskService {
+	log.Println("Task service created")
+
+	return &TaskService{}
 }
 
 func (t *TaskService) Index() []string {

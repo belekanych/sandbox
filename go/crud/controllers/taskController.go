@@ -1,32 +1,53 @@
 package controllers
 
 import (
+	"log"
 	"time"
 
-	"github.com/belekanych/sandbox/go/crud/bootstrap"
+	"github.com/belekanych/sandbox/go/crud/services"
 	"github.com/gofiber/fiber/v2"
 )
 
-func TaskIndexController(c *fiber.Ctx) error {
+type TaskController struct {
+	ts *services.TaskService
+}
+
+func CreateNewTaskController(ts *services.TaskService) *TaskController {
+	log.Println("Task controller created")
+
+	return &TaskController{ts: ts}
+}
+
+func SetupTaskController(app *fiber.App, ts *services.TaskService) {
+	taskController := CreateNewTaskController(ts)
+
+    app.Get("/", taskController.Index)
+
+    tasks := app.Group("/tasks")
+    tasks.Get("/store", taskController.Store)
+    tasks.Get("/delete/:id", taskController.Delete)
+}
+
+func (ctr *TaskController) Index(c *fiber.Ctx) error {
 	return c.Render("task/index", fiber.Map{
 		"Title": "Tasks",
-		"Tasks": bootstrap.TaskService.Index(),
+		"Tasks": ctr.ts.Index(),
 	})
 }
 
-func TaskStoreController(c *fiber.Ctx) error {
-	bootstrap.TaskService.Store(time.Now().GoString())
+func (ctr *TaskController) Store(c *fiber.Ctx) error {
+	ctr.ts.Store(time.Now().GoString())
 	return c.RedirectBack("/")
 }
 
-func TaskDeleteController(c *fiber.Ctx) error {
+func (ctr *TaskController) Delete(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 
 	if err != nil {
 		return c.RedirectBack("/", fiber.StatusNotFound)
 	}
 
-	bootstrap.TaskService.Delete(id)
+	ctr.ts.Delete(id)
 
 	return c.RedirectBack("/")
 }
