@@ -1,13 +1,28 @@
 version: '3.8'
 
 services:
-  web:
-    container_name: web
+  api:
+    container_name: sandbox_go_crud_api
     image: golang:1.21.0
     working_dir: /usr/src/app
     entrypoint: /bin/bash
     ports:
       - "3000:3000"
+    links:
+      - mysql
     volumes:
       - ./:/usr/src/app
     tty: true
+  mysql:
+    container_name: sandbox_go_crud_mysql
+    image: mysql:8.0
+    platform: linux/arm64
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=sandbox_go_crud
+      - MYSQL_USER=sandbox_go_crud
+      - MYSQL_PASSWORD=password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./storage/mysql-data:/var/lib/mysql:cached

@@ -1,3 +1,4 @@
 crud
 .devcontainer/
 .env
+storage/mysql-data/

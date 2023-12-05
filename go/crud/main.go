@@ -7,6 +7,7 @@ import (
 	"github.com/belekanych/sandbox/go/crud/bootstrap"
 	"github.com/belekanych/sandbox/go/crud/controllers"
 	"github.com/belekanych/sandbox/go/crud/services"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
 )
