@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"log"
-	"time"
 
+	"github.com/belekanych/sandbox/go/crud/requests"
 	"github.com/belekanych/sandbox/go/crud/services"
 	"github.com/gofiber/fiber/v2"
 )
@@ -24,8 +24,8 @@ func SetupTaskController(app *fiber.App, ts *services.TaskService) {
     app.Get("/", taskController.Index)
 
     tasks := app.Group("/tasks")
-    tasks.Get("/store", taskController.Store)
-    tasks.Get("/delete/:id", taskController.Delete)
+    tasks.Post("/", taskController.Store)
+    tasks.Post("/:id/delete", taskController.Delete)
 }
 
 func (ctr *TaskController) Index(c *fiber.Ctx) error {
@@ -36,7 +36,19 @@ func (ctr *TaskController) Index(c *fiber.Ctx) error {
 }
 
 func (ctr *TaskController) Store(c *fiber.Ctx) error {
-	ctr.ts.Store(time.Now().GoString())
+	r := new(requests.StoreTaskRequest)
+	if err := c.BodyParser(r); err != nil {
+		return err
+	}
+
+	if (r.Title == "") {
+		return c.RedirectBack("/", fiber.StatusUnprocessableEntity)
+	}
+
+	if err := ctr.ts.Store(r.Title); err != nil {
+		return c.RedirectBack("/", fiber.StatusInternalServerError)
+	}
+
 	return c.RedirectBack("/")
 }
 
@@ -47,7 +59,10 @@ func (ctr *TaskController) Delete(c *fiber.Ctx) error {
 		return c.RedirectBack("/", fiber.StatusNotFound)
 	}
 
-	ctr.ts.Delete(id)
+	if err := ctr.ts.Delete(id); err != nil {
+		log.Println("Error: " + err.Error())
+		return c.RedirectBack("/", fiber.StatusInternalServerError)
+	}
 
 	return c.RedirectBack("/")
 }

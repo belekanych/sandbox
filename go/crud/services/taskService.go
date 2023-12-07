@@ -8,7 +8,6 @@ import (
 )
 
 type TaskService struct {
-	items []string
 	db *sql.DB
 }
 
@@ -24,7 +23,7 @@ func CreateNewTaskService() *TaskService {
 	return &TaskService{ db: db }
 }
 
-func (t *TaskService) Index() []string {
+func (t *TaskService) Index() []*models.Task {
 	results, err := t.db.Query("SELECT * FROM tasks")
 	if err != nil {
 		panic(err)
@@ -34,34 +33,24 @@ func (t *TaskService) Index() []string {
 	for results.Next() {
 		var task models.Task
 
-		err = results.Scan(&task.Id, &task.Title)
-
-		if err != nil {
+		if err := results.Scan(&task.Id, &task.Title); err != nil {
 			panic(err)
 		}
 
 		tasks = append(tasks, &task)
 	}
 
-	var strings []string
-	for _, task := range tasks {
-		strings = append(strings, task.Title)
-	}
-	return strings
+	return tasks
 }
 
-func (t *TaskService) Store(task string) {
-	t.items = append(t.items, task)
+func (t *TaskService) Store(task string) error {
+	_, err := t.db.Query("INSERT INTO tasks (title) VALUES(?)", task)
+
+	return err
 }
 
-func (t *TaskService) Delete(index int) {
-	tasks := []string{}
+func (t *TaskService) Delete(id int) error {
+	_, err := t.db.Query("DELETE FROM tasks WHERE id = ?", id)
 
-	for i, task := range t.items {
-		if i != index {
-			tasks = append(tasks, task)
-		}
-	}
-
-	t.items = tasks
+	return err
 }

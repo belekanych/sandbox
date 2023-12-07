@@ -8,12 +8,21 @@
 </head>
 <body>
     <h1 class="text-3xl font-bold underline">{{ .Title }}</h1>
+    <form method="POST" action="/tasks">
+        <input type="text" name="title" placeholder="New task" />
+        <button type="submit">+</button>
+    </form>
     {{ if not .Tasks }}
         Empty yet
     {{ else }}
         <ul>
             {{ range .Tasks }}
-                <li>{{ . }}</li>
+                <li>
+                    {{ .Title }}
+                    <form method="POST" action="/tasks/{{ .Id }}/delete">
+                        <button type="submit">x</button>
+                    </form>
+                </li>
             {{ end }}
         </ul>
     {{ end }}
