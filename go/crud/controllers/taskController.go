@@ -1,8 +1,7 @@
 package controllers
 
 import (
-	"log"
-
+	"github.com/belekanych/sandbox/go/crud/database"
 	"github.com/belekanych/sandbox/go/crud/requests"
 	"github.com/belekanych/sandbox/go/crud/services"
 	"github.com/gofiber/fiber/v2"
@@ -12,14 +11,12 @@ type TaskController struct {
 	ts *services.TaskService
 }
 
-func CreateNewTaskController(ts *services.TaskService) *TaskController {
-	log.Println("Task controller created")
-
+func NewTaskController(ts *services.TaskService) *TaskController {
 	return &TaskController{ts: ts}
 }
 
 func SetupTaskController(app *fiber.App, ts *services.TaskService) {
-	taskController := CreateNewTaskController(ts)
+	taskController := NewTaskController(ts)
 
     app.Get("/", taskController.Index)
 
@@ -29,23 +26,30 @@ func SetupTaskController(app *fiber.App, ts *services.TaskService) {
 }
 
 func (ctr *TaskController) Index(c *fiber.Ctx) error {
+	db := database.NewConnection()
+	defer db.CloseConnection()
+
 	return c.Render("task/index", fiber.Map{
 		"Title": "Tasks",
-		"Tasks": ctr.ts.Index(),
+		"Tasks": ctr.ts.Index(db),
 	})
 }
 
 func (ctr *TaskController) Store(c *fiber.Ctx) error {
-	r := new(requests.StoreTaskRequest)
-	if err := c.BodyParser(r); err != nil {
+	r, err := requests.NewStoreTaskRequest(c)
+
+	if err != nil {
 		return err
 	}
 
-	if (r.Title == "") {
+	if err = r.Validate(); err != nil {
 		return c.RedirectBack("/", fiber.StatusUnprocessableEntity)
 	}
 
-	if err := ctr.ts.Store(r.Title); err != nil {
+	db := database.NewConnection()
+	defer db.CloseConnection()
+
+	if err := ctr.ts.Store(db, r.Title); err != nil {
 		return c.RedirectBack("/", fiber.StatusInternalServerError)
 	}
 
@@ -59,8 +63,10 @@ func (ctr *TaskController) Delete(c *fiber.Ctx) error {
 		return c.RedirectBack("/", fiber.StatusNotFound)
 	}
 
-	if err := ctr.ts.Delete(id); err != nil {
-		log.Println("Error: " + err.Error())
+	db := database.NewConnection()
+	defer db.CloseConnection()
+
+	if err := ctr.ts.Delete(db, id); err != nil {
 		return c.RedirectBack("/", fiber.StatusInternalServerError)
 	}
 

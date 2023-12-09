@@ -21,7 +21,7 @@ func main() {
         Views: html.New("./views", ".html"),
     })
 
-    controllers.SetupTaskController(app, services.CreateNewTaskService())
+    controllers.SetupTaskController(app, services.NewTaskService())
 
     log.Fatal(app.Listen(":" + os.Getenv("APP_PORT")))
 }
