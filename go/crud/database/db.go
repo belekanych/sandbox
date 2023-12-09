@@ -1,19 +1,32 @@
 package database
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+	"os"
+)
 
 type DB struct {
 	Conn *sql.DB
 }
 
-func NewConnection() *DB {
-	conn, err := sql.Open("mysql", "root:password@tcp(mysql:3306)/sandbox_go_crud")
+func NewConnection() (*DB, error) {
+	conn, err := sql.Open(
+		os.Getenv("DB_DRIVER"),
+		fmt.Sprintf(
+			"%s:%s@%s/%s",
+			os.Getenv("DB_USER"),
+			os.Getenv("DB_PASSWORD"),
+			os.Getenv("DB_CONNECTION"),
+			os.Getenv("DB_DATABASE"),
+		),
+	)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return &DB{ Conn: conn }
+	return &DB{ Conn: conn }, nil
 }
 
 func (db *DB) CloseConnection() {

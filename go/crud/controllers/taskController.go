@@ -27,7 +27,12 @@ func SetupTaskController(app *fiber.App, ts *services.TaskService) {
 }
 
 func (ctr *TaskController) Index(c *fiber.Ctx) error {
-	db := database.NewConnection()
+	db, err := database.NewConnection()
+	if err != nil {
+		log.Println(err)
+
+		return c.Render("common/errors/500", fiber.Map{})
+	}
 	defer db.CloseConnection()
 
 	tasks, err := ctr.ts.Index(db)
@@ -54,7 +59,12 @@ func (ctr *TaskController) Store(c *fiber.Ctx) error {
 		return c.Render("common/errors/422", fiber.Map{})
 	}
 
-	db := database.NewConnection()
+	db, err := database.NewConnection()
+	if err != nil {
+		log.Println(err)
+
+		return c.Render("common/errors/500", fiber.Map{})
+	}
 	defer db.CloseConnection()
 
 	task, err := ctr.ts.Store(db, r.Title)
@@ -77,7 +87,12 @@ func (ctr *TaskController) Delete(c *fiber.Ctx) error {
 		return c.Render("common/errors/404", fiber.Map{})
 	}
 
-	db := database.NewConnection()
+	db, err := database.NewConnection()
+	if err != nil {
+		log.Println(err)
+
+		return c.Render("common/errors/500", fiber.Map{})
+	}
 	defer db.CloseConnection()
 
 	if err := ctr.ts.Delete(db, id); err != nil {
