@@ -20,20 +20,26 @@ func NewTaskController(ts *services.TaskService) *TaskController {
 func SetupTaskController(app *fiber.App, ts *services.TaskService) {
 	taskController := NewTaskController(ts)
 
-    app.Get("/", taskController.Index)
-
     tasks := app.Group("/tasks")
+	tasks.Get("/", taskController.Index)
     tasks.Post("/", taskController.Store)
-    tasks.Post("/:id/delete", taskController.Delete)
+    tasks.Delete("/:id", taskController.Delete)
 }
 
 func (ctr *TaskController) Index(c *fiber.Ctx) error {
 	db := database.NewConnection()
 	defer db.CloseConnection()
 
+	tasks, err := ctr.ts.Index(db)
+
+	if err != nil {
+		log.Println(err)
+
+		return c.Render("common/errors/500", fiber.Map{})
+	}
+
 	return c.Render("task/index", fiber.Map{
-		"Title": "Tasks",
-		"Tasks": ctr.ts.Index(db),
+		"Tasks": tasks,
 	})
 }
 
@@ -45,26 +51,30 @@ func (ctr *TaskController) Store(c *fiber.Ctx) error {
 	}
 
 	if err = r.Validate(); err != nil {
-		return c.RedirectBack("/", fiber.StatusUnprocessableEntity)
+		return c.Render("common/errors/422", fiber.Map{})
 	}
 
 	db := database.NewConnection()
 	defer db.CloseConnection()
 
-	if err := ctr.ts.Store(db, r.Title); err != nil {
+	task, err := ctr.ts.Store(db, r.Title)
+
+	if err != nil {
 		log.Println(err)
 
-		return c.RedirectBack("/", fiber.StatusInternalServerError)
+		return c.Render("common/errors/500", fiber.Map{})
 	}
 
-	return c.RedirectBack("/")
+	return c.Render("task/show", fiber.Map{
+		"Task": task,
+	})
 }
 
 func (ctr *TaskController) Delete(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 
 	if err != nil {
-		return c.RedirectBack("/", fiber.StatusNotFound)
+		return c.Render("common/errors/404", fiber.Map{})
 	}
 
 	db := database.NewConnection()
@@ -73,8 +83,8 @@ func (ctr *TaskController) Delete(c *fiber.Ctx) error {
 	if err := ctr.ts.Delete(db, id); err != nil {
 		log.Println(err)
 
-		return c.RedirectBack("/", fiber.StatusInternalServerError)
+		return c.Render("common/errors/500", fiber.Map{})
 	}
 
-	return c.RedirectBack("/")
+	return c.Render("common/empty", fiber.Map{})
 }

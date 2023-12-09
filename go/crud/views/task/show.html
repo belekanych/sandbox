@@ -1,0 +1,13 @@
+<li class="flex justify-between my-2 text-slate-700">
+    {{ .Task.Title }}
+    <button
+        hx-delete="/tasks/{{ .Task.Id }}"
+        hx-trigger="click"
+        hx-target="closest li"
+        hx-swap="outerHTML"
+        class="rounded-full w-8 h-8 focus:text-white focus:bg-red-500 focus:outline-none focus:shadow hover:text-white hover:bg-red-500 hover:shadow"
+        type="button"
+    >
+        x
+    </button>
+</li>

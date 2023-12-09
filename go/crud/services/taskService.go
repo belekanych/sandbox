@@ -11,10 +11,10 @@ func NewTaskService() *TaskService {
 	return &TaskService{}
 }
 
-func (t *TaskService) Index(db *database.DB) []*models.Task {
+func (t *TaskService) Index(db *database.DB) ([]*models.Task, error) {
 	results, err := db.Conn.Query("SELECT * FROM tasks")
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	var tasks []*models.Task
@@ -22,19 +22,40 @@ func (t *TaskService) Index(db *database.DB) []*models.Task {
 		var task models.Task
 
 		if err := results.Scan(&task.Id, &task.Title); err != nil {
-			panic(err)
+			return nil, err
 		}
 
 		tasks = append(tasks, &task)
 	}
 
-	return tasks
+	return tasks, nil
 }
 
-func (t *TaskService) Store(db *database.DB, task string) error {
-	_, err := db.Conn.Query("INSERT INTO tasks (title) VALUES(?)", task)
+func (t *TaskService) Store(db *database.DB, title string) (*models.Task, error) {
+	results, err := db.Conn.Exec("INSERT INTO tasks (title) VALUES(?)", title)
 
-	return err
+	if err != nil {
+		return nil, err
+	}
+
+	id, err := results.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+
+	return t.Get(db, id)
+}
+
+func (t *TaskService) Get(db *database.DB, id int64) (*models.Task, error) {
+	results := db.Conn.QueryRow("SELECT id, title FROM tasks WHERE id = ?", id)
+
+	var task models.Task
+
+	if err := results.Scan(&task.Id, &task.Title); err != nil {
+		return nil, err
+	}
+
+	return &task, nil
 }
 
 func (t *TaskService) Delete(db *database.DB, id int) error {
