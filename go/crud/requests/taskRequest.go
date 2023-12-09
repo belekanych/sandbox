@@ -25,5 +25,9 @@ func (r *StoreTaskRequest) Validate() error {
 		return errors.New("Title cannot be empty")
 	}
 
+	if len(r.Title) > 45 {
+		return errors.New("Title cannot be longer than 45 symbols")
+	}
+
 	return nil
 }

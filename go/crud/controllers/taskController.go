@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"log"
+
 	"github.com/belekanych/sandbox/go/crud/database"
 	"github.com/belekanych/sandbox/go/crud/requests"
 	"github.com/belekanych/sandbox/go/crud/services"
@@ -50,6 +52,8 @@ func (ctr *TaskController) Store(c *fiber.Ctx) error {
 	defer db.CloseConnection()
 
 	if err := ctr.ts.Store(db, r.Title); err != nil {
+		log.Println(err)
+
 		return c.RedirectBack("/", fiber.StatusInternalServerError)
 	}
 
@@ -67,6 +71,8 @@ func (ctr *TaskController) Delete(c *fiber.Ctx) error {
 	defer db.CloseConnection()
 
 	if err := ctr.ts.Delete(db, id); err != nil {
+		log.Println(err)
+
 		return c.RedirectBack("/", fiber.StatusInternalServerError)
 	}
 

@@ -7,24 +7,46 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <h1 class="text-3xl font-bold underline">{{ .Title }}</h1>
-    <form method="POST" action="/tasks">
-        <input type="text" name="title" placeholder="New task" />
-        <button type="submit">+</button>
-    </form>
-    {{ if not .Tasks }}
-        Empty yet
-    {{ else }}
-        <ul>
-            {{ range .Tasks }}
-                <li>
-                    {{ .Title }}
-                    <form method="POST" action="/tasks/{{ .Id }}/delete">
-                        <button type="submit">x</button>
-                    </form>
-                </li>
+    <div class="w-full min-h-screen bg-gray-100 flex justify-center items-center">
+        <div class="bg-white rounded p-8 shadow w-96">
+            <h1 class="text-3xl font-bold text-violet-600 mb-4">{{ .Title }}</h1>
+            {{ if not .Tasks }}
+                <div class="text-slate-700 my-2">
+                    Well done!
+                </div>
+            {{ else }}
+                <ul>
+                    {{ range .Tasks }}
+                        <li class="flex justify-between my-2 text-slate-700">
+                            {{ .Title }}
+                            <form method="POST" action="/tasks/{{ .Id }}/delete">
+                                <button
+                                    class="rounded-full w-8 h-8 focus:text-white focus:bg-red-500 focus:outline-none focus:shadow hover:text-white hover:bg-red-500 hover:shadow"
+                                    type="submit"
+                                >
+                                    x
+                                </button>
+                            </form>
+                        </li>
+                    {{ end }}
+                </ul>
             {{ end }}
-        </ul>
-    {{ end }}
+            <form method="POST" action="/tasks" class="flex justify-between">
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="New task"
+                    class="flex-1 border-b border-slate-300 mr-4 focus:outline-none focus:border-violet-600"
+                    autofocus
+                />
+                <button
+                    class="bg-slate-700 rounded-full text-white w-8 h-8 shadow focus:outline-none focus:bg-violet-600 hover:bg-violet-600"
+                    type="submit"
+                >
+                    +
+                </button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
