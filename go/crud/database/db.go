@@ -6,8 +6,15 @@ import (
 	"os"
 )
 
+type DBInterface interface {
+	CloseConnection()
+	Query(query string, args ...any) (*sql.Rows, error)
+	QueryRow(query string, args ...any) *sql.Row
+	Exec(query string, args ...any) (sql.Result, error)
+}
+
 type DB struct {
-	Conn *sql.DB
+	conn *sql.DB
 }
 
 func NewConnection() (*DB, error) {
@@ -26,9 +33,21 @@ func NewConnection() (*DB, error) {
 		return nil, err
 	}
 
-	return &DB{ Conn: conn }, nil
+	return &DB{ conn: conn }, nil
+}
+
+func (db *DB) Query(query string, args ...any) (*sql.Rows, error) {
+	return db.conn.Query(query, args...)
+}
+
+func (db *DB) QueryRow(query string, args ...any) *sql.Row {
+	return db.conn.QueryRow(query, args...)
+}
+
+func (db *DB) Exec(query string, args ...any) (sql.Result, error) {
+	return db.conn.Exec(query, args...)
 }
 
 func (db *DB) CloseConnection() {
-	db.Conn.Close()
+	db.conn.Close()
 }

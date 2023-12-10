@@ -1,22 +1,21 @@
 package controllers
 
 import (
-	"github.com/belekanych/sandbox/go/crud/services"
 	"github.com/gofiber/fiber/v2"
 )
 
-type HomeController struct {
-	ts *services.TaskService
+type HomeController struct {}
+
+func NewHomeController() *HomeController {
+	return &HomeController{}
 }
 
-func NewHomeController(ts *services.TaskService) *HomeController {
-	return &HomeController{ ts: ts }
-}
-
-func SetupHomeController(app *fiber.App, ts *services.TaskService) {
-	ctr := NewHomeController(ts)
+func SetupHomeController(app *fiber.App) error {
+	ctr := NewHomeController()
 
     app.Get("/", ctr.Index)
+
+	return nil
 }
 
 func (ctr *HomeController) Index(c *fiber.Ctx) error {
