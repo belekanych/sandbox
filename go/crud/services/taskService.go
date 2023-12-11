@@ -9,7 +9,7 @@ import (
 type TaskServiceInterface interface {
 	Index() ([]*models.Task, error)
 	Store(title string) (*models.Task, error)
-	Get(id int64) (*models.Task, error)
+	Get(id int) (*models.Task, error)
 	Delete(id int) error
 }
 
@@ -26,25 +26,10 @@ func (t *TaskService) Index() ([]*models.Task, error) {
 		return nil, err
 	}
 
-	defer db.CloseConnection()
-
-	results, err := db.Query("SELECT * FROM tasks")
-	if err != nil {
-		return nil, err
-	}
-
 	var tasks []*models.Task
-	for results.Next() {
-		var task models.Task
+    result := db.Find(&tasks)
 
-		if err := results.Scan(&task.Id, &task.Title); err != nil {
-			return nil, err
-		}
-
-		tasks = append(tasks, &task)
-	}
-
-	return tasks, nil
+	return tasks, result.Error
 }
 
 func (t *TaskService) Store(title string) (*models.Task, error) {
@@ -54,40 +39,24 @@ func (t *TaskService) Store(title string) (*models.Task, error) {
 		return nil, err
 	}
 
-	defer db.CloseConnection()
+	task := models.Task{ Title: title }
 
-	results, err := db.Exec("INSERT INTO tasks (title) VALUES(?)", title)
+	result := db.Create(&task)
 
-	if err != nil {
-		return nil, err
-	}
-
-	id, err := results.LastInsertId()
-	if err != nil {
-		return nil, err
-	}
-
-	return t.Get(id)
+	return &task, result.Error
 }
 
-func (t *TaskService) Get(id int64) (*models.Task, error) {
+func (t *TaskService) Get(id int) (*models.Task, error) {
 	db, err := t.getDatabase()
 
 	if err != nil {
 		return nil, err
 	}
 
-	defer db.CloseConnection()
+	task := models.Task{ Id: id }
+	result := db.First(&task)
 
-	results := db.QueryRow("SELECT id, title FROM tasks WHERE id = ?", id)
-
-	var task models.Task
-
-	if err := results.Scan(&task.Id, &task.Title); err != nil {
-		return nil, err
-	}
-
-	return &task, nil
+	return &task, result.Error
 }
 
 func (t *TaskService) Delete(id int) error {
@@ -97,11 +66,9 @@ func (t *TaskService) Delete(id int) error {
 		return err
 	}
 
-	defer db.CloseConnection()
+	result := db.Delete(&models.Task{}, id)
 
-	_, err = db.Query("DELETE FROM tasks WHERE id = ?", id)
-
-	return err
+	return result.Error
 }
 
 func (t *TaskService) getDatabase() (database.DBInterface, error) {

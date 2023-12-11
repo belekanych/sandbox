@@ -6,13 +6,12 @@ import (
 
 	"github.com/belekanych/sandbox/go/crud/bootstrap"
 	"github.com/belekanych/sandbox/go/crud/controllers"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
 )
 
 func init() {
-    bootstrap.LoadEnvVariables()
+	bootstrap.LoadEnvVariables()
 	bootstrap.LoadIocContainer()
 }
 
