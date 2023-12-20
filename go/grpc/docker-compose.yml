@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: sandbox_go_grpc
+    build:
+      context: "."
+      dockerfile: ./docker/Dockerfile
+    working_dir: /usr/src/app
+    entrypoint: /bin/bash
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    tty: true
