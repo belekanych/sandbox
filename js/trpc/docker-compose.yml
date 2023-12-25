@@ -1,0 +1,22 @@
+version: "3.4"
+services:
+  client:
+    container_name: trpc_client
+    image: node:lts
+    working_dir: /var/www/html/app/client
+    entrypoint: /bin/bash
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/var/www/html/app
+    tty: true
+  server:
+    container_name: trpc_server
+    image: node:lts
+    working_dir: /var/www/html/app/server
+    entrypoint: /bin/bash
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./:/var/www/html/app
+    tty: true
