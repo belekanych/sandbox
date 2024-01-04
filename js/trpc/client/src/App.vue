@@ -1,39 +1,25 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
-import type { AppRouter } from '../../server/src';
-import { ref } from 'vue';
+import ExpenseForm from './components/ExpenseForm.vue'
+import ExpenseList from './components/ExpenseList.vue'
+import { ref } from 'vue'
 import type { Ref } from 'vue'
- 
-// Pass AppRouter as generic here. 👇 This lets the `trpc` object know
-// what procedures are available on the server and their input/output types.
-const trpc = createTRPCProxyClient<AppRouter>({
-  links: [
-    httpBatchLink({
-      url: '/api',
-    }),
-  ],
-});
+import Expense from '../../server/src/models/expense'
+import api from './api'
 
-const users: Ref<string[]> = ref([]);
+const expenses: Ref<Expense[]> = ref([])
 
 const load = async () => {
-  users.value = await trpc.userList.query();
+  expenses.value = await api.expenses.index.query()
 }
 load()
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  {{ users }}
-  <HelloWorld msg="Vite + Vue" />
+  <expense-form @created="load" />
+  <expense-list
+    :expenses="expenses"
+    @removed="load"
+  />
 </template>
 
 <style scoped>
