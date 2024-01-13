@@ -1,0 +1,12 @@
+version: "3.4"
+services:
+  mealio:
+    container_name: mealio
+    image: node:lts
+    working_dir: /var/www/html/app
+    entrypoint: /bin/bash
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/var/www/html/app
+    tty: true

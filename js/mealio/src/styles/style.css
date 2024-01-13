@@ -1,0 +1,10 @@
+:root {
+    --bg-color: hsl(15deg 5% 95%);
+    --white: white;
+    --radius: 8px;
+    --card-width: 400px;
+}
+
+body {
+    background-color: var(--bg-color);
+}
