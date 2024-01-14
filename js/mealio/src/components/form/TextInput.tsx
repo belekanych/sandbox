@@ -1,5 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 import { colors } from "../../styles/tokens.stylex";
+import { ChangeHandler, FieldError } from "react-hook-form";
+import { forwardRef } from "react";
 
 const styles = stylex.create({
   label: {
@@ -13,21 +15,31 @@ const styles = stylex.create({
     borderWidth: "1px",
     borderStyle: "solid",
   },
+  error: {
+    color: colors.red,
+  },
 });
 
 export interface InputProps {
   name: string;
   label: string;
-  value: string;
-  onChange: (value: string) => void;
+  onChange: ChangeHandler;
+  onBlur: ChangeHandler;
+  min?: string | number;
+  max?: string | number;
+  maxLength?: number;
+  minLength?: number;
+  pattern?: string;
   required?: boolean;
+  disabled?: boolean;
+  error?: FieldError;
 }
 
 interface TextInputProps extends InputProps {
   type?: "text" | "email" | "password";
 }
 
-const TextInput: React.FC<TextInputProps> = (props) => {
+const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
   return (
     <>
       <label htmlFor={props.name} {...stylex.props(styles.label)}>
@@ -36,14 +48,16 @@ const TextInput: React.FC<TextInputProps> = (props) => {
       <input
         type={props.type || "text"}
         id={props.name}
-        name={props.name}
-        defaultValue={props.value}
-        required={props.required}
-        onChange={(e) => props.onChange(e.currentTarget.value)}
+        ref={ref}
+        aria-invalid={!!props.error}
+        {...props}
         {...stylex.props(styles.input)}
       />
+      {props.error ? (
+        <span {...stylex.props(styles.error)}>{props.error.message}</span>
+      ) : null}
     </>
   );
-};
+});
 
 export default TextInput;

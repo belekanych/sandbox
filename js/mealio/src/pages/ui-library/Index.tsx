@@ -1,6 +1,6 @@
 import TextInput from "../../components/form/TextInput";
 import EmailInput from "../../components/form/EmailInput";
-import PasswordInput from "../../components/form/PasswordInput.";
+import PasswordInput from "../../components/form/PasswordInput";
 import GuestLayout from "../../components/layouts/GuestLayout";
 
 function App() {

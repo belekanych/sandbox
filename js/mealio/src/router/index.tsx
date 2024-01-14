@@ -1,14 +1,12 @@
-import ErrorElement from "../components/ErrorElement";
 import auth from "./routes/auth";
+import dashboard from "./routes/dashboard";
+import landing from "./routes/landing";
 import uiLibrary from "./routes/uiLibrary";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: `<h1>Test</h1>`,
-    errorElement: <ErrorElement />,
-  },
+  ...landing,
   ...auth,
   ...uiLibrary,
+  ...dashboard,
 ]);

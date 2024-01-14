@@ -1,12 +1,14 @@
 import * as stylex from "@stylexjs/stylex";
-import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import GuestLayout from "../../components/layouts/GuestLayout";
 import Button from "../../components/controls/Button";
 import EmailInput from "../../components/form/EmailInput";
 import Fieldset from "../../components/form/Fieldset";
-import PasswordInput from "../../components/form/PasswordInput.";
+import PasswordInput from "../../components/form/PasswordInput";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 const styles = stylex.create({
   form: {
@@ -16,54 +18,58 @@ const styles = stylex.create({
   },
 });
 
-function App() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+function Register() {
   const auth = useAuth();
   const navigate = useNavigate();
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
+  const schema = z
+    .object({
+      email: z.string().email(),
+      password: z.string().min(6).max(64),
+      passwordConfirmation: z.string().min(6).max(64),
+    })
+    .refine((data) => data.password === data.passwordConfirmation, {
+      message: "Passwords do not match",
+      path: ["passwordConfirmation"],
+    });
 
-    if (password !== passwordConfirmation) {
+  type FormData = z.infer<typeof schema>;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  async function submit(data: FormData) {
+    if (!auth) {
       return;
     }
 
-    if (email === "" || password === "" || passwordConfirmation === "") {
-      return;
-    }
-
-    if (auth) {
-      await auth.signup(email, password);
-      navigate("/");
-    }
+    await auth.signup(data.email, data.password);
+    navigate("/");
   }
 
   return (
     <GuestLayout title="Register" footer={<Footer />}>
-      <form {...stylex.props(styles.form)} onSubmit={submit}>
+      <form {...stylex.props(styles.form)} onSubmit={handleSubmit(submit)}>
         <Fieldset>
           <EmailInput
-            name="email"
             label="Email"
-            value={email}
-            onChange={setEmail}
-            required
+            {...register("email")}
+            error={errors.email}
           />
           <PasswordInput
-            name="password"
             label="Password"
-            value={password}
-            onChange={setPassword}
-            required
+            {...register("password")}
+            error={errors.password}
           />
           <PasswordInput
-            name="passwordConfirmation"
             label="Confirm password"
-            value={passwordConfirmation}
-            onChange={setPasswordConfirmation}
-            required
+            {...register("passwordConfirmation")}
+            error={errors.passwordConfirmation}
           />
         </Fieldset>
         <Button type="submit">Register</Button>
@@ -72,7 +78,7 @@ function App() {
   );
 }
 
-export default App;
+export default Register;
 
 function Footer() {
   return (

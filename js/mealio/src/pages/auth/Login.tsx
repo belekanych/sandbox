@@ -1,12 +1,14 @@
 import * as stylex from "@stylexjs/stylex";
-import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GuestLayout from "../../components/layouts/GuestLayout";
 import Fieldset from "../../components/form/Fieldset";
 import Button from "../../components/controls/Button";
 import EmailInput from "../../components/form/EmailInput";
-import PasswordInput from "../../components/form/PasswordInput.";
+import PasswordInput from "../../components/form/PasswordInput";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const styles = stylex.create({
   form: {
@@ -16,42 +18,50 @@ const styles = stylex.create({
   },
 });
 
-function App() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+function Login() {
   const auth = useAuth();
+  const navigate = useNavigate();
 
-  function submit(e: React.FormEvent) {
-    console.log("submit");
-    e.preventDefault();
+  const schema = z.object({
+    email: z.string().email(),
+    password: z.string().min(6).max(64),
+  });
 
-    if (email === "" || password === "") {
+  type FormData = z.infer<typeof schema>;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  async function submit(data: FormData) {
+    if (!auth) {
       return;
     }
 
-    auth && auth.login(email, password);
+    await auth.login(data.email, data.password);
+    navigate("/");
   }
 
   return (
     <GuestLayout title="Login" footer={<Footer />}>
-      <form {...stylex.props(styles.form)} onSubmit={submit}>
+      <form {...stylex.props(styles.form)} onSubmit={handleSubmit(submit)}>
         <Fieldset>
           <EmailInput
-            name="email"
             label="Email"
-            value={email}
-            onChange={setEmail}
-            required
+            {...register("email")}
+            error={errors.email}
           />
           <PasswordInput
-            name="password"
             label="Password"
-            value={password}
-            onChange={setPassword}
-            required
+            {...register("password")}
+            error={errors.password}
           />
         </Fieldset>
-        <Button type="submit">Login</Button>
+        <Button type="submit">Register</Button>
       </form>
     </GuestLayout>
   );
@@ -65,4 +75,4 @@ function Footer() {
   );
 }
 
-export default App;
+export default Login;

@@ -16,9 +16,9 @@ type AuthContextType = {
   signup: (email: string, password: string) => Promise<UserCredential>;
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
-} | null;
+};
 
-const AuthContext = React.createContext<AuthContextType>(null);
+const AuthContext = React.createContext<AuthContextType>({});
 
 export function useAuth() {
   return useContext<AuthContextType>(AuthContext);
