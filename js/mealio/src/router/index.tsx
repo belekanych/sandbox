@@ -1,6 +1,7 @@
 import auth from "./routes/auth";
 import dashboard from "./routes/dashboard";
 import landing from "./routes/landing";
+import product from "./routes/product";
 import uiLibrary from "./routes/uiLibrary";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -9,4 +10,5 @@ export const router = createBrowserRouter([
   ...auth,
   ...uiLibrary,
   ...dashboard,
+  ...product,
 ]);

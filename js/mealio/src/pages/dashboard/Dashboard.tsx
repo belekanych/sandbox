@@ -1,6 +1,6 @@
+import MainLayout from "../../components/layouts/MainLayout";
 import { useAuth } from "../../contexts/AuthContext";
-import GuestLayout from "../../components/layouts/GuestLayout";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const { currentUser, logout } = useAuth();
@@ -13,12 +13,13 @@ function Dashboard() {
   };
 
   return (
-    <GuestLayout title="Dashboard">
+    <MainLayout title="Dashboard">
       Welcome, {currentUser ? currentUser.email : "Guest"}!
+      <Link to="/product">Products</Link>
       <button type="button" onClick={submit}>
         Logout
       </button>
-    </GuestLayout>
+    </MainLayout>
   );
 }
 
