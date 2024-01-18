@@ -23,6 +23,7 @@ const styles = stylex.create({
 export interface InputProps {
   name: string;
   label: string;
+  defaultValue?: string | number | readonly string[] | undefined;
   onChange: ChangeHandler;
   onBlur: ChangeHandler;
   min?: string | number;
@@ -36,7 +37,7 @@ export interface InputProps {
 }
 
 interface TextInputProps extends InputProps {
-  type?: "text" | "email" | "password";
+  type?: "text" | "email" | "password" | "number";
 }
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
@@ -50,6 +51,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
         id={props.name}
         ref={ref}
         aria-invalid={!!props.error}
+        defaultValue={props.defaultValue}
         {...props}
         {...stylex.props(styles.input)}
       />

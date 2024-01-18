@@ -1,7 +1,7 @@
 import auth from "./routes/auth";
 import dashboard from "./routes/dashboard";
 import landing from "./routes/landing";
-import product from "./routes/product";
+import product from "../domains/product/routes";
 import uiLibrary from "./routes/uiLibrary";
 import { createBrowserRouter } from "react-router-dom";
 

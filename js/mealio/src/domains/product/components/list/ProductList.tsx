@@ -1,8 +1,8 @@
 import { query, where, onSnapshot, collection } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { useAuth } from "../../../contexts/AuthContext";
-import Product from "../entities/Product";
-import { db } from "../../../vendor/firebase";
+import { useAuth } from "../../../../contexts/AuthContext";
+import Product from "../../entities/Product";
+import { db } from "../../../../vendor/firebase";
 import ProductListItem from "./ProductListItem";
 
 const productsRef = collection(db, "products");
