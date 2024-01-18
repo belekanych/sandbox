@@ -5,7 +5,7 @@ import ProductCreateForm from "../components/form/ProductCreateForm";
 function Create() {
   return (
     <MainLayout title="Products > Create">
-      <Link to="/product">Back</Link>
+      <Link to="/products">Back</Link>
       <ProductCreateForm />
     </MainLayout>
   );

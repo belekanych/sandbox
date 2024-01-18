@@ -15,7 +15,7 @@ function Dashboard() {
   return (
     <MainLayout title="Dashboard">
       Welcome, {currentUser ? currentUser.email : "Guest"}!
-      <Link to="/product">Products</Link>
+      <Link to="/products">Products</Link>
       <button type="button" onClick={submit}>
         Logout
       </button>

@@ -49,7 +49,7 @@ const ProductCreateForm: React.FC<Props> = () => {
       userId: auth.currentUser!.uid,
     });
 
-    navigate("/product");
+    navigate("/products");
   }
 
   return (

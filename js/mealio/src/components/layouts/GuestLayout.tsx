@@ -6,7 +6,7 @@ const styles = stylex.create({
     backgroundColor: colors.background,
     borderRadius: spacing.borderRadius,
     padding: spacing.base,
-    boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
+    boxShadow: colors.boxShadow,
   },
   heading: {
     textAlign: "center",

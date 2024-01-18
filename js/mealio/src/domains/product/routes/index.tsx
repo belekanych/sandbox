@@ -8,15 +8,15 @@ export default [
     element: <AuthRoute />,
     children: [
       {
-        path: "/product",
+        path: "/products",
         element: <List />,
       },
       {
-        path: "/product/create",
+        path: "/products/create",
         element: <Create />,
       },
       {
-        path: "/product/:id",
+        path: "/products/:id",
         element: <Edit />,
       },
     ],

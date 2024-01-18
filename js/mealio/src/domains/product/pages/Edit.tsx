@@ -31,7 +31,7 @@ function List() {
 
   return (
     <MainLayout title="Products > Edit">
-      <Link to="/product">Back</Link>
+      <Link to="/products">Back</Link>
       {product ? (
         <ProductEditForm product={product} />
       ) : (

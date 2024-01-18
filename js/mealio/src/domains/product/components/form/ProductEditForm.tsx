@@ -47,7 +47,7 @@ const ProductEditForm: React.FC<Props> = (props) => {
       ...data,
     });
 
-    navigate("/product");
+    navigate("/products");
   }
 
   return (

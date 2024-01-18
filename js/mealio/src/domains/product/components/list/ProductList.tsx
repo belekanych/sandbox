@@ -1,9 +1,17 @@
-import { query, where, onSnapshot, collection } from "firebase/firestore";
-import { useState, useEffect } from "react";
-import { useAuth } from "../../../../contexts/AuthContext";
 import Product from "../../entities/Product";
-import { db } from "../../../../vendor/firebase";
 import ProductListItem from "./ProductListItem";
+import * as stylex from "@stylexjs/stylex";
+import { db } from "../../../../vendor/firebase";
+import { query, where, onSnapshot, collection } from "firebase/firestore";
+import { useAuth } from "../../../../contexts/AuthContext";
+import { useState, useEffect } from "react";
+
+const styles = stylex.create({
+  list: {
+    listStyle: "none",
+    padding: 0,
+  },
+});
 
 const productsRef = collection(db, "products");
 
@@ -37,7 +45,7 @@ const ProductList: React.FC<Props> = () => {
   }, [currentUser]);
 
   return products.length ? (
-    <ul>
+    <ul {...stylex.props(styles.list)}>
       {products.map((product) => (
         <ProductListItem key={product.id} product={product} />
       ))}
