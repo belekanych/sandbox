@@ -1,6 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
 import { useAuth } from "../../contexts/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import GuestLayout from "../../components/layouts/GuestLayout";
 import Fieldset from "../../components/form/Fieldset";
 import Button from "../../components/controls/Button";
@@ -9,12 +9,15 @@ import PasswordInput from "../../components/form/PasswordInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { spacing } from "../../styles/tokens.stylex";
+import Link from "../../components/controls/Link";
 
 const styles = stylex.create({
   form: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    padding: spacing.md,
   },
 });
 

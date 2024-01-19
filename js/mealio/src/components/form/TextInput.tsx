@@ -1,19 +1,27 @@
 import * as stylex from "@stylexjs/stylex";
-import { colors } from "../../styles/tokens.stylex";
+import { colors, spacing } from "../../styles/tokens.stylex";
 import { ChangeHandler, FieldError } from "react-hook-form";
 import { forwardRef } from "react";
 
 const styles = stylex.create({
+  group: {
+    marginBottom: spacing.lg,
+  },
   label: {
     display: "block",
+    fontWeight: "bold",
+    color: colors.gray,
   },
   input: {
     display: "block",
     width: "100%",
-    borderRadius: "0",
-    borderColor: colors.black,
+    borderRadius: spacing.xs,
+    borderColor: colors.gray,
     borderWidth: "1px",
     borderStyle: "solid",
+    boxSizing: "border-box",
+    padding: spacing.sm,
+    margin: `${spacing.sm} ${spacing.none}`,
   },
   error: {
     color: colors.red,
@@ -42,7 +50,7 @@ interface TextInputProps extends InputProps {
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
   return (
-    <>
+    <div {...stylex.props(styles.group)}>
       <label htmlFor={props.name} {...stylex.props(styles.label)}>
         {props.label}:
       </label>
@@ -58,7 +66,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
       {props.error ? (
         <span {...stylex.props(styles.error)}>{props.error.message}</span>
       ) : null}
-    </>
+    </div>
   );
 });
 
