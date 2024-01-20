@@ -5,23 +5,24 @@ import { forwardRef } from "react";
 
 const styles = stylex.create({
   group: {
-    marginBottom: spacing.lg,
+    marginBottom: spacing.xl,
   },
   label: {
     display: "block",
-    fontWeight: "bold",
-    color: colors.gray,
+    fontWeight: "bolder",
+    color: colors.gray5,
   },
   input: {
     display: "block",
     width: "100%",
     borderRadius: spacing.xs,
-    borderColor: colors.gray,
+    borderColor: colors.gray5,
     borderWidth: "1px",
     borderStyle: "solid",
     boxSizing: "border-box",
     padding: spacing.sm,
     margin: `${spacing.sm} ${spacing.none}`,
+    background: colors.none,
   },
   error: {
     color: colors.red,

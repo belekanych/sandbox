@@ -10,7 +10,7 @@ const styles = stylex.create({
     minHeight: "100vh",
   },
   main: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.gray100,
     borderRadius: spacing.lg,
     padding: spacing.base,
     boxShadow: colors.boxShadow,
@@ -18,7 +18,7 @@ const styles = stylex.create({
   },
   heading: {
     textAlign: "center",
-    color: colors.gray,
+    color: colors.gray5,
   },
   footer: {
     padding: spacing.lg,

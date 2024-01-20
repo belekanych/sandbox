@@ -18,7 +18,12 @@ type AuthContextType = {
   logout: () => Promise<void>;
 };
 
-const AuthContext = React.createContext<AuthContextType>({});
+const AuthContext = React.createContext<AuthContextType>({
+  currentUser: null,
+  signup: () => new Promise<UserCredential>((_, reject) => reject()),
+  login: () => new Promise<UserCredential>((_, reject) => reject()),
+  logout: () => new Promise<void>((resolve) => resolve()),
+});
 
 export function useAuth() {
   return useContext<AuthContextType>(AuthContext);

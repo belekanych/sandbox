@@ -18,3 +18,9 @@ install:
 
 dev:
 	$(NODE) npm run dev
+
+build:
+	$(NODE) npm run build
+
+deploy:
+	$(NODE) firebase deploy
