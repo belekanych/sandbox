@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { spacing } from "../../styles/tokens.stylex";
 import Link from "../../components/controls/Link";
+import { useTranslation } from "react-i18next";
 
 const styles = stylex.create({
   form: {
@@ -24,6 +25,9 @@ const styles = stylex.create({
 function Login() {
   const auth = useAuth();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+
+  console.log(i18n);
 
   const schema = z.object({
     email: z.string().email(),
@@ -64,7 +68,7 @@ function Login() {
             error={errors.password}
           />
         </Fieldset>
-        <Button type="submit">Register</Button>
+        <Button type="submit">{t("actions.login")}</Button>
       </form>
     </GuestLayout>
   );

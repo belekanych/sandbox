@@ -25,7 +25,7 @@ interface Props {
 
 const ProductListItem: React.FC<Props> = ({ product }) => {
   async function onDelete() {
-    await deleteDoc(doc(db, `//${product.id}`));
+    await deleteDoc(doc(db, `/products/${product.id}`));
   }
 
   return (

@@ -22,5 +22,11 @@ dev:
 build:
 	$(NODE) npm run build
 
+firebase/install:
+	$(NODE) npm install -g firebase-tools
+
+firebase/login:
+	$(NODE) firebase login
+
 deploy:
 	$(NODE) firebase deploy
