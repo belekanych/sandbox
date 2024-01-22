@@ -1,6 +1,6 @@
-import MainLayout from "../../components/layouts/MainLayout";
+import MainLayout from "../../components/layout/MainLayout";
 import { useAuth } from "../../contexts/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const { currentUser, logout } = useAuth();
@@ -15,7 +15,6 @@ function Dashboard() {
   return (
     <MainLayout title="Dashboard">
       Welcome, {currentUser ? currentUser.email : "Guest"}!
-      <Link to="/products">Products</Link>
       <button type="button" onClick={submit}>
         Logout
       </button>

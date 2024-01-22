@@ -1,5 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
 import { colors, spacing } from "../../styles/tokens.stylex";
+import Card from "./blocks/Card";
 
 const styles = stylex.create({
   container: {
@@ -8,13 +9,10 @@ const styles = stylex.create({
     alignItems: "center",
     flexDirection: "column",
     minHeight: "100vh",
-  },
-  main: {
-    backgroundColor: colors.gray100,
-    borderRadius: spacing.lg,
-    padding: spacing.base,
-    boxShadow: colors.boxShadow,
-    width: "100%",
+    backgroundColor: colors.gray90,
+    padding: spacing.md,
+    boxSizing: "border-box",
+    color: colors.gray0,
   },
   heading: {
     textAlign: "center",
@@ -34,10 +32,10 @@ interface Props {
 const GuestLayout: React.FC<Props> = (props) => {
   return (
     <div {...stylex.props(styles.container)}>
-      <main {...stylex.props(styles.main)}>
+      <Card el="main">
         <h1 {...stylex.props(styles.heading)}>{props.title}</h1>
         {props.children}
-      </main>
+      </Card>
       {props.footer ? (
         <footer {...stylex.props(styles.footer)}>{props.footer}</footer>
       ) : null}

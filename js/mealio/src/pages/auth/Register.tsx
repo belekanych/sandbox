@@ -1,7 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import GuestLayout from "../../components/layouts/GuestLayout";
+import GuestLayout from "../../components/layout/GuestLayout";
 import Button from "../../components/controls/Button";
 import EmailInput from "../../components/form/EmailInput";
 import Fieldset from "../../components/form/Fieldset";
@@ -9,7 +9,6 @@ import PasswordInput from "../../components/form/PasswordInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { spacing } from "../../styles/tokens.stylex";
 import Link from "../../components/controls/Link";
 
 const styles = stylex.create({
@@ -17,7 +16,6 @@ const styles = stylex.create({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: spacing.md,
   },
 });
 

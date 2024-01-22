@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import MainLayout from "../../../components/layouts/MainLayout";
+import Link from "../../../components/controls/Link";
+import MainLayout from "../../../components/layout/MainLayout";
 import ProductList from "../components/list/ProductList";
 import { MdOutlineAddCircle as CreateIcon } from "react-icons/md";
 

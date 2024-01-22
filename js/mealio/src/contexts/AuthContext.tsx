@@ -1,10 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth } from "../vendor/firebase";
 import {
+  GoogleAuthProvider,
   User,
   UserCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
 } from "firebase/auth";
 
 interface Props {
@@ -16,6 +18,7 @@ type AuthContextType = {
   signup: (email: string, password: string) => Promise<UserCredential>;
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
+  signInWithGoogle: () => Promise<UserCredential>;
 };
 
 const AuthContext = React.createContext<AuthContextType>({
@@ -23,6 +26,7 @@ const AuthContext = React.createContext<AuthContextType>({
   signup: () => new Promise<UserCredential>((_, reject) => reject()),
   login: () => new Promise<UserCredential>((_, reject) => reject()),
   logout: () => new Promise<void>((resolve) => resolve()),
+  signInWithGoogle: () => new Promise<UserCredential>((_, reject) => reject()),
 });
 
 export function useAuth() {
@@ -45,6 +49,12 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     return auth.signOut();
   }
 
+  async function signInWithGoogle(): Promise<UserCredential> {
+    const provider = new GoogleAuthProvider();
+
+    return await signInWithPopup(auth, provider);
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
       setCurrentUser(user);
@@ -55,7 +65,9 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser, signup, login, logout }}>
+    <AuthContext.Provider
+      value={{ currentUser, signup, login, logout, signInWithGoogle }}
+    >
       {!loading && children}
     </AuthContext.Provider>
   );

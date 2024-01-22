@@ -8,7 +8,7 @@ export const colors = stylex.defineVars({
   background: "white",
   black: "hsl(var(--base-hue), 1%, 5%)",
   white: "white",
-  red: "0, 70%, 50%)",
+  red: "hsl(0, 70%, 50%)",
   lightGray: "hsl(var(--base-hue), var(--base-sat-low), 70%)",
   gray: {
     default: "hsl(var(--base-hue), var(--base-sat-low), 40%)",
@@ -81,6 +81,8 @@ export const spacing = stylex.defineVars({
   borderRadius: "16px",
   base: "4px",
   none: "0px",
+  one: "1px",
+  xxs: "2px",
   xs: "4px",
   sm: "8px",
   md: "12px",
@@ -88,4 +90,9 @@ export const spacing = stylex.defineVars({
   xl: "32px",
   xl2: "48px",
   xl3: "96px",
+});
+
+export const fonts = stylex.defineVars({
+  base: "1em",
+  sm: "0.9em",
 });

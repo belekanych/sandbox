@@ -1,16 +1,18 @@
 import * as stylex from "@stylexjs/stylex";
-import { colors, spacing } from "../../styles/tokens.stylex";
+import { colors, fonts, spacing } from "../../styles/tokens.stylex";
 import { ChangeHandler, FieldError } from "react-hook-form";
 import { forwardRef } from "react";
 
 const styles = stylex.create({
   group: {
     marginBottom: spacing.xl,
+    position: "relative",
   },
   label: {
     display: "block",
     fontWeight: "bolder",
     color: colors.gray5,
+    paddingBottom: spacing.sm,
   },
   input: {
     display: "block",
@@ -20,12 +22,21 @@ const styles = stylex.create({
     borderWidth: "1px",
     borderStyle: "solid",
     boxSizing: "border-box",
-    padding: spacing.sm,
-    margin: `${spacing.sm} ${spacing.none}`,
+    padding: `${spacing.none} ${spacing.sm}`,
     background: colors.none,
+    fontSize: fonts.base,
+    height: spacing.xl,
+    color: "inherit",
+  },
+  inputError: {
+    borderColor: colors.red,
   },
   error: {
+    paddingTop: spacing.xs,
     color: colors.red,
+    fontSize: fonts.sm,
+    position: "absolute",
+    top: "100%",
   },
 });
 
@@ -62,7 +73,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
         aria-invalid={!!props.error}
         defaultValue={props.defaultValue}
         {...props}
-        {...stylex.props(styles.input)}
+        {...stylex.props(styles.input, props.error && styles.inputError)}
       />
       {props.error ? (
         <span {...stylex.props(styles.error)}>{props.error.message}</span>

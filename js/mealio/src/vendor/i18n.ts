@@ -13,6 +13,11 @@ i18next
           actions: {
             login: "Login",
           },
+          errors: {
+            auth: {
+              failed: "The provided email or password are incorrect.",
+            },
+          },
         },
       },
       uk: {

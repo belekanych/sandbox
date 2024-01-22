@@ -1,0 +1,75 @@
+{
+    "short_name": "Mealio",
+    "name": "Mealio - Food management app",
+    "icons": [
+        {
+          "src": "/icons-48.png",
+          "type": "image/png",
+          "sizes": "48x48",
+          "purpose": "maskable"
+        },
+        {
+          "src": "/icons-72.png",
+          "type": "image/png",
+          "sizes": "72x72",
+          "purpose": "maskable"
+        },
+        {
+          "src": "/icons-96.png",
+          "type": "image/png",
+          "sizes": "96x96",
+          "purpose": "maskable"
+        },
+        {
+          "src": "/icons-128.png",
+          "type": "image/png",
+          "sizes": "128x128",
+          "purpose": "maskable"
+        },
+        {
+          "src": "/icons-192.png",
+          "type": "image/png",
+          "sizes": "192x192",
+          "purpose": "maskable"
+        },
+        {
+          "src": "/icons.png",
+          "type": "image/png",
+          "sizes": "365x365",
+          "purpose": "maskable"
+        },
+        {
+          "src": "/icons.png",
+          "type": "image/png",
+          "sizes": "365x365",
+          "purpose": "any"
+        }
+      ],
+    "id": "/?source=pwa",
+    "start_url": "/?source=pwa",
+    "background_color": "#111414",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#111414",
+    "description": "An app created to manage your food at home.",
+    "screenshots": [
+        {
+          "src": "/screenshot1.png",
+          "type": "image/png",
+          "sizes": "700x1280",
+          "form_factor": "narrow"
+        },
+        {
+          "src": "/screenshot2.png",
+          "type": "image/png",
+          "sizes": "700x1280",
+          "form_factor": "narrow"
+        },
+        {
+          "src": "/screenshot3.png",
+          "type": "image/png",
+          "sizes": "700x1280",
+          "form_factor": "narrow"
+        }
+      ]
+  }

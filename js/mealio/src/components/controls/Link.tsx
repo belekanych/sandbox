@@ -4,8 +4,11 @@ import { Link as RouterLink } from "react-router-dom";
 
 const styles = stylex.create({
   link: {
-    color: colors.gray,
     textDecoration: "none",
+    color: colors.gray20,
+    ":hover": {
+      color: colors.gray10,
+    },
   },
 });
 

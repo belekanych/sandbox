@@ -1,17 +1,15 @@
 import * as stylex from "@stylexjs/stylex";
 import Product from "../../entities/Product";
-import { Link } from "react-router-dom";
 import { db } from "../../../../vendor/firebase";
 import { deleteDoc, doc } from "firebase/firestore";
-import { colors, spacing } from "../../../../styles/tokens.stylex";
+import { spacing } from "../../../../styles/tokens.stylex";
 import { MdEdit as EditIcon, MdDelete as DeleteIcon } from "react-icons/md";
+import Link from "../../../../components/controls/Link";
+import Card from "../../../../components/layout/blocks/Card";
 
 const styles = stylex.create({
   item: {
-    backgroundColor: colors.background,
-    borderRadius: spacing.borderRadius,
     padding: spacing.base,
-    boxShadow: colors.boxShadow,
     margin: `calc(${spacing.base} * 4) 0`,
     display: "flex",
     justifyContent: "space-between",
@@ -29,7 +27,7 @@ const ProductListItem: React.FC<Props> = ({ product }) => {
   }
 
   return (
-    <li {...stylex.props(styles.item)}>
+    <Card el="li" {...stylex.props(styles.item)}>
       <p>{product.name}</p>
       <div>
         <Link to={"/products/" + product.id}>
@@ -39,7 +37,7 @@ const ProductListItem: React.FC<Props> = ({ product }) => {
           <DeleteIcon />
         </button>
       </div>
-    </li>
+    </Card>
   );
 };
 

@@ -1,10 +1,11 @@
-import { Link, useParams } from "react-router-dom";
-import MainLayout from "../../../components/layouts/MainLayout";
+import { useParams } from "react-router-dom";
+import MainLayout from "../../../components/layout/MainLayout";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../vendor/firebase";
 import { useEffect, useState } from "react";
 import Product from "../entities/Product";
 import ProductEditForm from "../components/form/ProductEditForm";
+import Link from "../../../components/controls/Link";
 
 function List() {
   const { id } = useParams();
@@ -31,7 +32,7 @@ function List() {
 
   return (
     <MainLayout title="Products > Edit">
-      <Link to="/products">Back</Link>
+      <Link to="/products">&#8678; Back</Link>
       {product ? (
         <ProductEditForm product={product} />
       ) : (

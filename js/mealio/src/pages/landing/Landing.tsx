@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import GuestLayout from "../../components/layouts/GuestLayout";
+import Link from "../../components/controls/Link";
+import GuestLayout from "../../components/layout/GuestLayout";
 
 function Landing() {
   return (

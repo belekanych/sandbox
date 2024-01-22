@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
-import MainLayout from "../../../components/layouts/MainLayout";
+import Link from "../../../components/controls/Link";
+import MainLayout from "../../../components/layout/MainLayout";
 import ProductCreateForm from "../components/form/ProductCreateForm";
 
 function Create() {
   return (
     <MainLayout title="Products > Create">
-      <Link to="/products">Back</Link>
+      <Link to="/products">&#8678; Back</Link>
       <ProductCreateForm />
     </MainLayout>
   );

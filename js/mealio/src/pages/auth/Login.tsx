@@ -1,33 +1,40 @@
 import * as stylex from "@stylexjs/stylex";
-import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
-import GuestLayout from "../../components/layouts/GuestLayout";
-import Fieldset from "../../components/form/Fieldset";
 import Button from "../../components/controls/Button";
 import EmailInput from "../../components/form/EmailInput";
-import PasswordInput from "../../components/form/PasswordInput";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { spacing } from "../../styles/tokens.stylex";
+import Fieldset from "../../components/form/Fieldset";
+import GuestLayout from "../../components/layout/GuestLayout";
 import Link from "../../components/controls/Link";
+import PasswordInput from "../../components/form/PasswordInput";
+import { useAuth } from "../../contexts/AuthContext";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { colors, spacing } from "../../styles/tokens.stylex";
 
 const styles = stylex.create({
   form: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: spacing.md,
+  },
+  socialContainer: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: spacing.md,
+    borderStyle: "solid",
+    borderColor: colors.gray90,
+    borderWidth: spacing.none,
+    borderTopWidth: spacing.one,
+    paddingTop: spacing.md,
   },
 });
 
 function Login() {
   const auth = useAuth();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
-
-  console.log(i18n);
+  const { t } = useTranslation();
 
   const schema = z.object({
     email: z.string().email(),
@@ -39,6 +46,7 @@ function Login() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -49,8 +57,25 @@ function Login() {
       return;
     }
 
-    await auth.login(data.email, data.password);
-    navigate("/");
+    try {
+      await auth.login(data.email, data.password);
+      navigate("/");
+    } catch {
+      setError("email", { type: "custom", message: t("errors.auth.failed") });
+    }
+  }
+
+  async function submitGoogle() {
+    if (!auth) {
+      return;
+    }
+
+    try {
+      await auth.signInWithGoogle();
+      navigate("/");
+    } catch {
+      setError("email", { type: "custom", message: t("errors.auth.failed") });
+    }
   }
 
   return (
@@ -70,6 +95,11 @@ function Login() {
         </Fieldset>
         <Button type="submit">{t("actions.login")}</Button>
       </form>
+      <div {...stylex.props(styles.socialContainer)}>
+        <Button type="button" onClick={submitGoogle}>
+          Google
+        </Button>
+      </div>
     </GuestLayout>
   );
 }
