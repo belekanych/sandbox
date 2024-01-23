@@ -1,5 +1,5 @@
-import { AuthRoute } from "../Route";
-import Dashboard from "../../pages/dashboard/Dashboard";
+import { AuthRoute } from "../../../router/Route";
+import Dashboard from "../pages/Dashboard";
 
 export default [
   {

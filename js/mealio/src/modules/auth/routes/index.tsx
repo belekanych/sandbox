@@ -1,7 +1,7 @@
-import { GuestRoute } from "../Route";
-import ErrorElement from "../../components/ErrorElement";
-import Login from "../../pages/auth/Login";
-import Register from "../../pages/auth/Register";
+import { GuestRoute } from "../../../router/Route";
+import ErrorElement from "../../../components/ErrorElement";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 
 export default [
   {

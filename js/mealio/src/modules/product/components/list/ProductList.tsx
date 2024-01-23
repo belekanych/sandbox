@@ -3,7 +3,7 @@ import ProductListItem from "./ProductListItem";
 import * as stylex from "@stylexjs/stylex";
 import { db } from "../../../../vendor/firebase";
 import { query, where, onSnapshot, collection } from "firebase/firestore";
-import { useAuth } from "../../../../contexts/AuthContext";
+import { useAuth } from "../../../auth/contexts/AuthContext";
 import { useState, useEffect } from "react";
 
 const styles = stylex.create({

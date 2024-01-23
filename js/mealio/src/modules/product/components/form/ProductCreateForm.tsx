@@ -1,5 +1,5 @@
 import * as stylex from "@stylexjs/stylex";
-import { useAuth } from "../../../../contexts/AuthContext";
+import { useAuth } from "../../../auth/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Fieldset from "../../../../components/form/Fieldset";
 import Button from "../../../../components/controls/Button";

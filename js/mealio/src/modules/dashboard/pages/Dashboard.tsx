@@ -1,5 +1,5 @@
-import MainLayout from "../../components/layout/MainLayout";
-import { useAuth } from "../../contexts/AuthContext";
+import MainLayout from "../../../components/layout/MainLayout";
+import { useAuth } from "../../auth/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {

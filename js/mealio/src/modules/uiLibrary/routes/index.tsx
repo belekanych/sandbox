@@ -1,4 +1,4 @@
-import Index from "../../pages/ui-library/Index";
+import Index from "../pages/Index";
 
 export default [
   {

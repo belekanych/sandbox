@@ -1,6 +1,6 @@
-import { GuestRoute } from "../Route";
-import ErrorElement from "../../components/ErrorElement";
-import Landing from "../../pages/landing/Landing";
+import { GuestRoute } from "../../../router/Route";
+import ErrorElement from "../../../components/ErrorElement";
+import Landing from "../pages/Landing";
 
 export default [
   {
