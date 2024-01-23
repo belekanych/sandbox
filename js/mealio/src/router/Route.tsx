@@ -15,7 +15,7 @@ export const GuestRoute = () => {
   const { currentUser } = useAuth();
 
   if (currentUser) {
-    return <Navigate to={"/dashboard"} />;
+    return <Navigate to={"/profile"} />;
   }
 
   return <Outlet />;

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Product from "../entities/Product";
 import ProductEditForm from "../components/form/ProductEditForm";
 import Link from "../../../components/controls/Link";
+import Card from "../../../components/layout/blocks/Card";
 
 function List() {
   const { id } = useParams();
@@ -32,12 +33,14 @@ function List() {
 
   return (
     <MainLayout title="Products > Edit">
-      <Link to="/products">&#8678; Back</Link>
-      {product ? (
-        <ProductEditForm product={product} />
-      ) : (
-        <span>Loading...</span>
-      )}
+      <Card>
+        <Link to="/products">&#8678; Back</Link>
+        {product ? (
+          <ProductEditForm product={product} />
+        ) : (
+          <span>Loading...</span>
+        )}
+      </Card>
     </MainLayout>
   );
 }

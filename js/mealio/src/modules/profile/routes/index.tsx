@@ -1,13 +1,13 @@
 import { AuthRoute } from "../../../router/Route";
-import Dashboard from "../pages/Dashboard";
+import Profile from "../pages/Profile";
 
 export default [
   {
     element: <AuthRoute />,
     children: [
       {
-        path: "/dashboard",
-        element: <Dashboard />,
+        path: "/profile",
+        element: <Profile />,
       },
     ],
   },

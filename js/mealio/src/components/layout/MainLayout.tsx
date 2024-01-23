@@ -6,7 +6,6 @@ import { GiHotMeal as RecepiesIcon } from "react-icons/gi";
 import { IoCalendar as CalendarIcon } from "react-icons/io5";
 import { FaShoppingBasket as ShoppingListIcon } from "react-icons/fa";
 import { FaUser as AccountIcon } from "react-icons/fa6";
-import Card from "./blocks/Card";
 
 const styles = stylex.create({
   container: {
@@ -70,7 +69,7 @@ const MainLayout: React.FC<Props> = (props) => {
       component: ShoppingListIcon,
     },
     {
-      url: "/dashboard",
+      url: "/profile",
       component: AccountIcon,
     },
   ];
@@ -80,7 +79,7 @@ const MainLayout: React.FC<Props> = (props) => {
       <header {...stylex.props(styles.header)}>
         <h1 {...stylex.props(styles.heading)}>{props.title}</h1>
       </header>
-      <Card el="main">{props.children}</Card>
+      <main>{props.children}</main>
       <nav {...stylex.props(styles.nav)}>
         {navItems.map((item, key) => (
           <NavLink to={item.url} {...stylex.props(styles.navLink)} key={key}>

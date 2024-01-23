@@ -93,6 +93,8 @@ export const spacing = stylex.defineVars({
 });
 
 export const fonts = stylex.defineVars({
-  base: "1em",
-  sm: "0.9em",
+  base: "1rem",
+  sm: "0.9rem",
+  md: "1rem",
+  lg: "1.3rem",
 });
