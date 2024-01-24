@@ -1,11 +1,12 @@
 import * as stylex from "@stylexjs/stylex";
 import { colors, spacing } from "../../styles/tokens.stylex";
-import { NavLink } from "react-router-dom";
 import { RiFridgeFill as ProductsIcon } from "react-icons/ri";
 import { GiHotMeal as RecepiesIcon } from "react-icons/gi";
 import { IoCalendar as CalendarIcon } from "react-icons/io5";
 import { FaShoppingBasket as ShoppingListIcon } from "react-icons/fa";
 import { FaUser as AccountIcon } from "react-icons/fa6";
+import Link from "../controls/Link";
+import { useLocation } from "react-router-dom";
 
 const styles = stylex.create({
   container: {
@@ -74,6 +75,8 @@ const MainLayout: React.FC<Props> = (props) => {
     },
   ];
 
+  const { pathname } = useLocation();
+
   return (
     <div {...stylex.props(styles.container)}>
       <header {...stylex.props(styles.header)}>
@@ -82,16 +85,14 @@ const MainLayout: React.FC<Props> = (props) => {
       <main>{props.children}</main>
       <nav {...stylex.props(styles.nav)}>
         {navItems.map((item, key) => (
-          <NavLink to={item.url} {...stylex.props(styles.navLink)} key={key}>
-            {({ isActive }) => (
-              <item.component
-                {...stylex.props(
-                  styles.navIcon,
-                  isActive && styles.navIconActive
-                )}
-              />
-            )}
-          </NavLink>
+          <Link to={item.url} {...stylex.props(styles.navLink)} key={key}>
+            <item.component
+              {...stylex.props(
+                styles.navIcon,
+                item.url === pathname && styles.navIconActive
+              )}
+            />
+          </Link>
         ))}
       </nav>
     </div>

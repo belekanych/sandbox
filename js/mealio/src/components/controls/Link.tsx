@@ -19,7 +19,11 @@ interface Props {
 
 const Link = (props: Props) => {
   return (
-    <RouterLink {...props} {...stylex.props(styles.link)}>
+    <RouterLink
+      unstable_viewTransition
+      {...stylex.props(styles.link)}
+      {...props}
+    >
       {props.children}
     </RouterLink>
   );
