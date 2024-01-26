@@ -46,12 +46,11 @@ const styles = stylex.create({
   },
 });
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
-  children: React.ReactNode;
 }
 
-const MainLayout: React.FC<Props> = (props) => {
+const MainLayout: React.FC<Props> = ({ title, children, ...restProps }) => {
   const navItems = [
     {
       url: "/products",
@@ -66,7 +65,7 @@ const MainLayout: React.FC<Props> = (props) => {
       component: CalendarIcon,
     },
     {
-      url: "/",
+      url: "/shopping-list",
       component: ShoppingListIcon,
     },
     {
@@ -78,11 +77,11 @@ const MainLayout: React.FC<Props> = (props) => {
   const { pathname } = useLocation();
 
   return (
-    <div {...stylex.props(styles.container)}>
+    <div {...stylex.props(styles.container)} {...restProps}>
       <header {...stylex.props(styles.header)}>
-        <h1 {...stylex.props(styles.heading)}>{props.title}</h1>
+        <h1 {...stylex.props(styles.heading)}>{title}</h1>
       </header>
-      <main>{props.children}</main>
+      <main>{children}</main>
       <nav {...stylex.props(styles.nav)}>
         {navItems.map((item, key) => (
           <Link to={item.url} {...stylex.props(styles.navLink)} key={key}>

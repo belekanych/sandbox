@@ -18,6 +18,9 @@ i18next
               failed: "The provided email or password are incorrect.",
             },
           },
+          labels: {
+            amountLabel: "{{amount, number}} {{type}}",
+          },
         },
       },
       uk: {
