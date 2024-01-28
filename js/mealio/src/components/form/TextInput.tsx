@@ -1,44 +1,5 @@
-import * as stylex from "@stylexjs/stylex";
-import { colors, fonts, spacing } from "../../styles/tokens.stylex";
 import { ChangeHandler, FieldError } from "react-hook-form";
 import { forwardRef } from "react";
-
-const styles = stylex.create({
-  group: {
-    marginBottom: spacing.xl,
-    position: "relative",
-  },
-  label: {
-    display: "block",
-    fontWeight: "bolder",
-    color: colors.gray5,
-    paddingBottom: spacing.sm,
-  },
-  input: {
-    display: "block",
-    width: "100%",
-    borderRadius: spacing.xs,
-    borderColor: colors.gray5,
-    borderWidth: "1px",
-    borderStyle: "solid",
-    boxSizing: "border-box",
-    padding: `${spacing.none} ${spacing.sm}`,
-    background: colors.none,
-    fontSize: fonts.base,
-    height: spacing.xl,
-    color: "inherit",
-  },
-  inputError: {
-    borderColor: colors.red,
-  },
-  error: {
-    paddingTop: spacing.xs,
-    color: colors.red,
-    fontSize: fonts.sm,
-    position: "absolute",
-    top: "100%",
-  },
-});
 
 export interface InputProps {
   name: string;
@@ -62,22 +23,16 @@ interface TextInputProps extends InputProps {
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
   return (
-    <div {...stylex.props(styles.group)}>
-      <label htmlFor={props.name} {...stylex.props(styles.label)}>
-        {props.label}:
-      </label>
+    <div className="grid w-full max-w-sm items-center gap-1.5">
+      <label htmlFor="email">{props.label}</label>
       <input
-        type={props.type || "text"}
-        id={props.name}
         ref={ref}
+        type={props.type || "text"}
         aria-invalid={!!props.error}
-        defaultValue={props.defaultValue}
+        id={props.name}
         {...props}
-        {...stylex.props(styles.input, props.error && styles.inputError)}
       />
-      {props.error ? (
-        <span {...stylex.props(styles.error)}>{props.error.message}</span>
-      ) : null}
+      {props.error ? <span>{props.error.message}</span> : null}
     </div>
   );
 });

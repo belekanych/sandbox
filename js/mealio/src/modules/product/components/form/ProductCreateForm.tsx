@@ -1,4 +1,3 @@
-import * as stylex from "@stylexjs/stylex";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -9,14 +8,6 @@ import NumberInput from "@/components/form/NumberInput";
 import TextInput from "@/components/form/TextInput";
 import { useProductService } from "@/modules/product/services/ProductService";
 import Product from "@/modules/product/entities/Product";
-
-const styles = stylex.create({
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-});
 
 type Props = {
   //
@@ -49,7 +40,7 @@ const ProductCreateForm: React.FC<Props> = () => {
   }
 
   return (
-    <form {...stylex.props(styles.form)} onSubmit={handleSubmit(submit)}>
+    <form onSubmit={handleSubmit(submit)}>
       <Fieldset>
         <TextInput label="Name" {...register("name")} error={errors.name} />
         <NumberInput

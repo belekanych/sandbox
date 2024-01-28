@@ -1,20 +1,8 @@
-import * as stylex from "@stylexjs/stylex";
 import Card from "@/components/layout/blocks/Card";
 import Link from "@/components/controls/Link";
 import Product from "@/modules/product/entities/Product";
 import { MdEdit as EditIcon, MdDelete as DeleteIcon } from "react-icons/md";
-import { spacing } from "../../../../styles/tokens.stylex";
 import { useProductService } from "@/modules/product/services/ProductService";
-
-const styles = stylex.create({
-  item: {
-    padding: spacing.base,
-    margin: `calc(${spacing.base} * 4) 0`,
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-});
 
 interface Props {
   product: Product;
@@ -28,7 +16,7 @@ const ProductListItem: React.FC<Props> = ({ product }) => {
   }
 
   return (
-    <Card el="li" {...stylex.props(styles.item)}>
+    <Card el="li">
       <p>{product.name}</p>
       <div>
         <Link to={"/products/" + product.id}>

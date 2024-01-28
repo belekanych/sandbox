@@ -1,4 +1,3 @@
-import * as stylex from "@stylexjs/stylex";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,14 +9,6 @@ import PasswordInput from "@/components/form/PasswordInput";
 import GuestLayout from "@/components/layout/GuestLayout";
 import { useAuth } from "@/modules/auth/contexts/AuthContext";
 import Link from "@/components/controls/Link";
-
-const styles = stylex.create({
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-});
 
 function Register() {
   const auth = useAuth();
@@ -55,7 +46,7 @@ function Register() {
 
   return (
     <GuestLayout title="Register" footer={<Footer />}>
-      <form {...stylex.props(styles.form)} onSubmit={handleSubmit(submit)}>
+      <form onSubmit={handleSubmit(submit)}>
         <Fieldset>
           <EmailInput
             label="Email"

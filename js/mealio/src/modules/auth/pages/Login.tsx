@@ -1,35 +1,22 @@
-import * as stylex from "@stylexjs/stylex";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Button from "@/components/controls/Button";
-import EmailInput from "@/components/form/EmailInput";
-import Fieldset from "@/components/form/Fieldset";
-import PasswordInput from "@/components/form/PasswordInput";
 import GuestLayout from "@/components/layout/GuestLayout";
 import { useAuth } from "@/modules/auth/contexts/AuthContext";
-import { spacing, colors } from "../../../styles/tokens.stylex";
 import Link from "@/components/controls/Link";
-
-const styles = stylex.create({
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  socialContainer: {
-    display: "flex",
-    justifyContent: "center",
-    marginTop: spacing.md,
-    borderStyle: "solid",
-    borderColor: colors.gray90,
-    borderWidth: spacing.none,
-    borderTopWidth: spacing.one,
-    paddingTop: spacing.md,
-  },
-});
+import { Button } from "@/components/ui/button";
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Form,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 function Login() {
   const auth = useAuth();
@@ -43,13 +30,12 @@ function Login() {
 
   type FormData = z.infer<typeof schema>;
 
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<FormData>({
+  const form = useForm<FormData>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   async function submit(data: FormData) {
@@ -61,7 +47,10 @@ function Login() {
       await auth.login(data.email, data.password);
       navigate("/");
     } catch {
-      setError("email", { type: "custom", message: t("errors.auth.failed") });
+      form.setError("email", {
+        type: "custom",
+        message: t("errors.auth.failed"),
+      });
     }
   }
 
@@ -74,29 +63,58 @@ function Login() {
       await auth.signInWithGoogle();
       navigate("/");
     } catch {
-      setError("email", { type: "custom", message: t("errors.auth.failed") });
+      form.setError("email", {
+        type: "custom",
+        message: t("errors.auth.failed"),
+      });
     }
   }
 
   return (
     <GuestLayout title="Login" footer={<Footer />}>
-      <form {...stylex.props(styles.form)} onSubmit={handleSubmit(submit)}>
-        <Fieldset>
-          <EmailInput
-            label="Email"
-            {...register("email")}
-            error={errors.email}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(submit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your email here"
+                    type="email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>This is your personal email.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <PasswordInput
-            label="Password"
-            {...register("password")}
-            error={errors.password}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your password here"
+                    type="password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>This is secret phrase.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </Fieldset>
-        <Button type="submit">{t("actions.login")}</Button>
-      </form>
-      <div {...stylex.props(styles.socialContainer)}>
-        <Button type="button" onClick={submitGoogle}>
+          <Button type="submit">{t("actions.login")}</Button>
+        </form>
+      </Form>
+      <div className="border-t mt-4 pt-4">
+        <Button type="button" onClick={submitGoogle} variant={"secondary"}>
           Google
         </Button>
       </div>
@@ -107,7 +125,10 @@ function Login() {
 function Footer() {
   return (
     <>
-      Don't have an account? <Link to="/register">Register</Link>
+      Don't have an account?{" "}
+      <Button variant={"link"} asChild>
+        <Link to="/register">Register</Link>
+      </Button>
     </>
   );
 }
