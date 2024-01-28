@@ -3,9 +3,8 @@ import Card from "@/components/layout/blocks/Card";
 import Link from "@/components/controls/Link";
 import Product from "@/modules/product/entities/Product";
 import { MdEdit as EditIcon, MdDelete as DeleteIcon } from "react-icons/md";
-import { db } from "@/vendor/firebase";
-import { deleteDoc, doc } from "firebase/firestore";
 import { spacing } from "../../../../styles/tokens.stylex";
+import { useProductService } from "@/modules/product/services/ProductService";
 
 const styles = stylex.create({
   item: {
@@ -22,8 +21,10 @@ interface Props {
 }
 
 const ProductListItem: React.FC<Props> = ({ product }) => {
+  const { destroyProduct } = useProductService();
+
   async function onDelete() {
-    await deleteDoc(doc(db, `/products/${product.id}`));
+    return await destroyProduct(product);
   }
 
   return (

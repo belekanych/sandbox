@@ -7,3 +7,5 @@ type ShoppingListItem = {
 };
 
 export default ShoppingListItem;
+
+export const SHOPPING_LIST_ITEM_COLLECTION = "shoppingLists";

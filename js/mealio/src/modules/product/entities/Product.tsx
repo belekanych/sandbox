@@ -7,3 +7,5 @@ type Product = {
 };
 
 export default Product;
+
+export const PRODUCT_COLLECTION = "products";

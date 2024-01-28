@@ -3,13 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { db } from "@/vendor/firebase";
-import { addDoc, collection } from "firebase/firestore";
 import Button from "@/components/controls/Button";
 import Fieldset from "@/components/form/Fieldset";
 import NumberInput from "@/components/form/NumberInput";
 import TextInput from "@/components/form/TextInput";
-import { useAuth } from "@/modules/auth/contexts/AuthContext";
+import { useProductService } from "@/modules/product/services/ProductService";
+import Product from "@/modules/product/entities/Product";
 
 const styles = stylex.create({
   form: {
@@ -24,13 +23,12 @@ type Props = {
 };
 
 const ProductCreateForm: React.FC<Props> = () => {
-  const auth = useAuth();
   const navigate = useNavigate();
 
   const schema = z.object({
     name: z.string().min(1).max(32),
     plan: z.number().min(1).max(10000),
-    left: z.number().min(1).max(10000),
+    left: z.number().min(0).max(10000),
   });
 
   type FormData = z.infer<typeof schema>;
@@ -43,11 +41,9 @@ const ProductCreateForm: React.FC<Props> = () => {
     resolver: zodResolver(schema),
   });
 
+  const { storeProduct } = useProductService();
   async function submit(data: FormData) {
-    await addDoc(collection(db, "products"), {
-      ...data,
-      userId: auth.currentUser!.uid,
-    });
+    await storeProduct(data as Product);
 
     navigate("/products");
   }

@@ -4,12 +4,11 @@ import Fieldset from "@/components/form/Fieldset";
 import NumberInput from "@/components/form/NumberInput";
 import Product from "@/modules/product/entities/Product";
 import TextInput from "@/components/form/TextInput";
-import { db } from "@/vendor/firebase";
-import { doc, updateDoc } from "firebase/firestore";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useProductService } from "@/modules/product/services/ProductService";
 
 const styles = stylex.create({
   form: {
@@ -29,7 +28,7 @@ const ProductEditForm: React.FC<Props> = (props) => {
   const schema = z.object({
     name: z.string().min(1).max(32),
     plan: z.number().min(1).max(10000),
-    left: z.number().min(1).max(10000),
+    left: z.number().min(0).max(10000),
   });
 
   type FormData = z.infer<typeof schema>;
@@ -42,10 +41,12 @@ const ProductEditForm: React.FC<Props> = (props) => {
     resolver: zodResolver(schema),
   });
 
+  const { updateProduct } = useProductService();
   async function submit(data: FormData) {
-    await updateDoc(doc(db, `/products/${props.product.id}`), {
+    await updateProduct({
+      id: props.product.id,
       ...data,
-    });
+    } as Product);
 
     navigate("/products");
   }
