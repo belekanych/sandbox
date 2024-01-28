@@ -1,7 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
-import { useAuth } from "../../auth/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { colors, spacing } from "../../../styles/tokens.stylex";
+import { useAuth } from "@/modules/auth/contexts/AuthContext";
 
 const styles = stylex.create({
   button: {

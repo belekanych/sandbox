@@ -1,15 +1,15 @@
 import * as stylex from "@stylexjs/stylex";
-import { useNavigate } from "react-router-dom";
-import Fieldset from "../../../../components/form/Fieldset";
-import Button from "../../../../components/controls/Button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import TextInput from "../../../../components/form/TextInput";
-import NumberInput from "../../../../components/form/NumberInput";
-import { db } from "../../../../vendor/firebase";
+import Button from "@/components/controls/Button";
+import Fieldset from "@/components/form/Fieldset";
+import NumberInput from "@/components/form/NumberInput";
+import Product from "@/modules/product/entities/Product";
+import TextInput from "@/components/form/TextInput";
+import { db } from "@/vendor/firebase";
 import { doc, updateDoc } from "firebase/firestore";
-import Product from "../../entities/Product";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const styles = stylex.create({
   form: {

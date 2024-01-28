@@ -1,9 +1,9 @@
 import * as stylex from "@stylexjs/stylex";
-import MainLayout from "../../../components/layout/MainLayout";
-import Card from "../../../components/layout/blocks/Card";
-import { useAuth } from "../../auth/contexts/AuthContext";
 import { colors, fonts, spacing } from "../../../styles/tokens.stylex";
-import Logout from "../components/Logout";
+import MainLayout from "@/components/layout/MainLayout";
+import Card from "@/components/layout/blocks/Card";
+import { useAuth } from "@/modules/auth/contexts/AuthContext";
+import Logout from "@/modules/profile/components/Logout";
 
 const styles = stylex.create({
   userContainer: {

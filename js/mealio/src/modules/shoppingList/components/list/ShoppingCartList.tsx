@@ -1,8 +1,8 @@
 import * as stylex from "@stylexjs/stylex";
-import ShoppingCartListItem from "./ShoppingCartListItem";
-import { useStore } from "../../../../contexts/StoreContext";
+import { useStore } from "@/contexts/StoreContext";
 import { useMemo } from "react";
-import ShoppingListItem from "../../entities/ShoppingListItem";
+import ShoppingListItem from "@/modules/shoppingList/entities/ShoppingListItem";
+import ShoppingCartListItem from "@/modules/shoppingList/components/list/ShoppingCartListItem";
 
 const styles = stylex.create({
   list: {

@@ -5,8 +5,8 @@ import { GiHotMeal as RecepiesIcon } from "react-icons/gi";
 import { IoCalendar as CalendarIcon } from "react-icons/io5";
 import { FaShoppingBasket as ShoppingListIcon } from "react-icons/fa";
 import { FaUser as AccountIcon } from "react-icons/fa6";
-import Link from "../controls/Link";
 import { useLocation } from "react-router-dom";
+import Link from "@/components/controls/Link";
 
 const styles = stylex.create({
   container: {

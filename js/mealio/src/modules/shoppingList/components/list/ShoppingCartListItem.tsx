@@ -1,10 +1,10 @@
 import * as stylex from "@stylexjs/stylex";
-import { db } from "../../../../vendor/firebase";
+import { db } from "@/vendor/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { colors, spacing } from "../../../../styles/tokens.stylex";
-import Card from "../../../../components/layout/blocks/Card";
-import ShoppingListItem from "../../entities/ShoppingListItem";
-import { useStore } from "../../../../contexts/StoreContext";
+import Card from "@/components/layout/blocks/Card";
+import ShoppingListItem from "@/modules/shoppingList/entities/ShoppingListItem";
+import { useStore } from "@/contexts/StoreContext";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 

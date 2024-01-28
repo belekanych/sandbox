@@ -1,14 +1,13 @@
-import { useParams } from "react-router-dom";
-import MainLayout from "../../../components/layout/MainLayout";
+import { Link, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../../vendor/firebase";
+import { db } from "@/vendor/firebase";
 import { useEffect, useState } from "react";
-import Product from "../entities/Product";
-import ProductEditForm from "../components/form/ProductEditForm";
-import Link from "../../../components/controls/Link";
-import Card from "../../../components/layout/blocks/Card";
+import MainLayout from "@/components/layout/MainLayout";
+import Card from "@/components/layout/blocks/Card";
+import ProductEditForm from "@/modules/product/components/form/ProductEditForm";
+import Product from "@/modules/product/entities/Product";
 
-function List() {
+function Edit() {
   const { id } = useParams();
 
   const [product, setProduct] = useState<Product>();
@@ -45,4 +44,4 @@ function List() {
   );
 }
 
-export default List;
+export default Edit;

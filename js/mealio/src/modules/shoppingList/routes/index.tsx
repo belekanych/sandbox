@@ -1,5 +1,5 @@
-import List from "../pages/List";
-import { AuthRoute } from "../../../router/Route";
+import List from "@/modules/shoppingList/pages/List";
+import { AuthRoute } from "@/router/Route";
 
 export default [
   {

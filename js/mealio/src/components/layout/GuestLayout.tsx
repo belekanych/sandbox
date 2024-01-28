@@ -1,6 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
 import { colors, spacing } from "../../styles/tokens.stylex";
-import Card from "./blocks/Card";
+import Card from "@/components/layout/blocks/Card";
 
 const styles = stylex.create({
   container: {

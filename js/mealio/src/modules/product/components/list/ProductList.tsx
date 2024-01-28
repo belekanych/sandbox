@@ -1,6 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
-import ProductListItem from "./ProductListItem";
-import { useStore } from "../../../../contexts/StoreContext";
+import { useStore } from "@/contexts/StoreContext";
+import ProductListItem from "@/modules/product/components/list/ProductListItem";
 
 const styles = stylex.create({
   list: {

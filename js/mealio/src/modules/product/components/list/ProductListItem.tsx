@@ -1,11 +1,11 @@
 import * as stylex from "@stylexjs/stylex";
-import Product from "../../entities/Product";
-import { db } from "../../../../vendor/firebase";
+import Card from "@/components/layout/blocks/Card";
+import Link from "@/components/controls/Link";
+import Product from "@/modules/product/entities/Product";
+import { MdEdit as EditIcon, MdDelete as DeleteIcon } from "react-icons/md";
+import { db } from "@/vendor/firebase";
 import { deleteDoc, doc } from "firebase/firestore";
 import { spacing } from "../../../../styles/tokens.stylex";
-import { MdEdit as EditIcon, MdDelete as DeleteIcon } from "react-icons/md";
-import Link from "../../../../components/controls/Link";
-import Card from "../../../../components/layout/blocks/Card";
 
 const styles = stylex.create({
   item: {

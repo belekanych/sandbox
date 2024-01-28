@@ -1,4 +1,4 @@
-import GuestLayout from "../../../components/layout/GuestLayout";
+import GuestLayout from "@/components/layout/GuestLayout";
 
 function App() {
   return (

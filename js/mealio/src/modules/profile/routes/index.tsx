@@ -1,5 +1,5 @@
-import { AuthRoute } from "../../../router/Route";
-import Profile from "../pages/Profile";
+import Profile from "@/modules/profile/pages/Profile";
+import { AuthRoute } from "@/router/Route";
 
 export default [
   {

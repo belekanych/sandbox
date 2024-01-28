@@ -1,7 +1,7 @@
-import Create from "../pages/Create";
-import List from "../pages/List";
-import { AuthRoute } from "../../../router/Route";
-import Edit from "../pages/Edit";
+import Create from "@/modules/product/pages/Create";
+import Edit from "@/modules/product/pages/Edit";
+import List from "@/modules/product/pages/List";
+import { AuthRoute } from "@/router/Route";
 
 export default [
   {

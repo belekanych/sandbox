@@ -1,17 +1,17 @@
 import * as stylex from "@stylexjs/stylex";
-import Button from "../../../components/controls/Button";
-import EmailInput from "../../../components/form/EmailInput";
-import Fieldset from "../../../components/form/Fieldset";
-import GuestLayout from "../../../components/layout/GuestLayout";
-import Link from "../../../components/controls/Link";
-import PasswordInput from "../../../components/form/PasswordInput";
-import { useAuth } from "../contexts/AuthContext";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { colors, spacing } from "../../../styles/tokens.stylex";
+import Button from "@/components/controls/Button";
+import EmailInput from "@/components/form/EmailInput";
+import Fieldset from "@/components/form/Fieldset";
+import PasswordInput from "@/components/form/PasswordInput";
+import GuestLayout from "@/components/layout/GuestLayout";
+import { useAuth } from "@/modules/auth/contexts/AuthContext";
+import { spacing, colors } from "../../../styles/tokens.stylex";
+import Link from "@/components/controls/Link";
 
 const styles = stylex.create({
   form: {

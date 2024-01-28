@@ -1,6 +1,6 @@
-import MainLayout from "../../../components/layout/MainLayout";
-import Card from "../../../components/layout/blocks/Card";
-import ShoppingCartList from "../components/list/ShoppingCartList";
+import MainLayout from "@/components/layout/MainLayout";
+import Card from "@/components/layout/blocks/Card";
+import ShoppingCartList from "@/modules/shoppingList/components/list/ShoppingCartList";
 
 function List() {
   return (

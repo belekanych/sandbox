@@ -1,7 +1,7 @@
-import Link from "../../../components/controls/Link";
-import MainLayout from "../../../components/layout/MainLayout";
-import Card from "../../../components/layout/blocks/Card";
-import ProductCreateForm from "../components/form/ProductCreateForm";
+import Link from "@/components/controls/Link";
+import MainLayout from "@/components/layout/MainLayout";
+import Card from "@/components/layout/blocks/Card";
+import ProductCreateForm from "@/modules/product/components/form/ProductCreateForm";
 
 function Create() {
   return (
