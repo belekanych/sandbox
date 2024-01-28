@@ -15,22 +15,18 @@ const styles = stylex.create({
   },
 });
 
-interface Props {
-  children: React.ReactNode;
+interface Props extends React.HTMLAttributes<HTMLButtonElement> {
   type: "submit" | "button";
-  onClick?: () => void;
+  disabled?: boolean;
 }
 
 const Button: React.FC<Props> = (props) => {
-  function onClick() {
-    props.onClick && props.onClick();
-  }
-
   return (
     <button
       {...stylex.props(styles.button)}
+      {...props}
       type={props.type}
-      onClick={onClick}
+      disabled={props.disabled}
     >
       {props.children}
     </button>
