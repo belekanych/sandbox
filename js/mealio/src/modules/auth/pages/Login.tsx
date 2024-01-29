@@ -17,6 +17,7 @@ import {
   Form,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import SignInWithGoogle from "@/modules/auth/components/SignInWithGoogle";
 
 function Login() {
   const auth = useAuth();
@@ -38,6 +39,13 @@ function Login() {
     },
   });
 
+  const onError = () => {
+    form.setError("email", {
+      type: "custom",
+      message: t("errors.auth.failed"),
+    });
+  };
+
   async function submit(data: FormData) {
     if (!auth) {
       return;
@@ -47,26 +55,7 @@ function Login() {
       await auth.login(data.email, data.password);
       navigate("/");
     } catch {
-      form.setError("email", {
-        type: "custom",
-        message: t("errors.auth.failed"),
-      });
-    }
-  }
-
-  async function submitGoogle() {
-    if (!auth) {
-      return;
-    }
-
-    try {
-      await auth.signInWithGoogle();
-      navigate("/");
-    } catch {
-      form.setError("email", {
-        type: "custom",
-        message: t("errors.auth.failed"),
-      });
+      onError();
     }
   }
 
@@ -110,13 +99,13 @@ function Login() {
               </FormItem>
             )}
           />
-          <Button type="submit">{t("actions.login")}</Button>
+          <Button type="submit" className="w-full">
+            {t("actions.login")}
+          </Button>
         </form>
       </Form>
       <div className="border-t mt-4 pt-4">
-        <Button type="button" onClick={submitGoogle} variant={"secondary"}>
-          Google
-        </Button>
+        <SignInWithGoogle onError={onError} />
       </div>
     </GuestLayout>
   );
@@ -125,7 +114,7 @@ function Login() {
 function Footer() {
   return (
     <>
-      Don't have an account?{" "}
+      <span className="text-sm">Don't have an account?</span>
       <Button variant={"link"} asChild>
         <Link to="/register">Register</Link>
       </Button>

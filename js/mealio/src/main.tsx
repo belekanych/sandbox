@@ -1,5 +1,5 @@
-import "./styles/style.css";
-import "@/vendor/i18n";
+import "./styles/globals.css";
+import "@/lib/i18n";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";

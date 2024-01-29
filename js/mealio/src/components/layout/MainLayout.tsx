@@ -4,12 +4,15 @@ import { IoCalendar as CalendarIcon } from "react-icons/io5";
 import { FaShoppingBasket as ShoppingListIcon } from "react-icons/fa";
 import { FaUser as AccountIcon } from "react-icons/fa6";
 import Link from "@/components/controls/Link";
+import { useLocation } from "react-router-dom";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
 }
 
 const MainLayout: React.FC<Props> = ({ title, children, ...restProps }) => {
+  const location = useLocation();
+
   const navItems = [
     {
       url: "/products",
@@ -34,14 +37,20 @@ const MainLayout: React.FC<Props> = ({ title, children, ...restProps }) => {
   ];
 
   return (
-    <div {...restProps}>
-      <header>
+    <div className="min-h-screen min-w-full relative" {...restProps}>
+      <header className="w-full text-2xl font-bold pt-4 px-4 pb-0">
         <h1>{title}</h1>
       </header>
-      <main>{children}</main>
-      <nav>
+      <main className="p-4">{children}</main>
+      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 flex px-4 bg-card text-muted-foreground shadow rounded-full">
         {navItems.map((item, key) => (
-          <Link to={item.url} key={key}>
+          <Link
+            to={item.url}
+            key={key}
+            className={`p-4 text-2xl ${
+              location.pathname === item.url && "text-accent-foreground"
+            }`}
+          >
             <item.component />
           </Link>
         ))}

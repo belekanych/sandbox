@@ -1,6 +1,6 @@
 import Product from "@/modules/product/entities/Product";
 import React, { useContext, useState, useEffect } from "react";
-import { db } from "@/vendor/firebase";
+import { db } from "@/lib/firebase";
 import { query, where, onSnapshot, collection } from "firebase/firestore";
 import { useAuth } from "@/modules/auth/contexts/AuthContext";
 import ShoppingListItem from "@/modules/shoppingList/entities/ShoppingListItem";

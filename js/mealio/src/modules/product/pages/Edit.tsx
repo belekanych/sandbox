@@ -1,11 +1,11 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/vendor/firebase";
+import { db } from "@/lib/firebase";
 import { useEffect, useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
-import Card from "@/components/layout/blocks/Card";
 import ProductEditForm from "@/modules/product/components/form/ProductEditForm";
 import Product from "@/modules/product/entities/Product";
+import ProductDeleteForm from "@/modules/product/components/form/ProductDeleteForm";
 
 function Edit() {
   const { id } = useParams();
@@ -32,14 +32,14 @@ function Edit() {
 
   return (
     <MainLayout title="Products > Edit">
-      <Card>
-        <Link to="/products">&#8678; Back</Link>
-        {product ? (
+      {product ? (
+        <>
           <ProductEditForm product={product} />
-        ) : (
-          <span>Loading...</span>
-        )}
-      </Card>
+          <ProductDeleteForm product={product} />
+        </>
+      ) : (
+        <span>Loading...</span>
+      )}
     </MainLayout>
   );
 }

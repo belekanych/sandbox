@@ -3,7 +3,7 @@ import { PRODUCT_COLLECTION } from "@/modules/product/entities/Product";
 import ShoppingListItem, {
   SHOPPING_LIST_ITEM_COLLECTION,
 } from "@/modules/shoppingList/entities/ShoppingListItem";
-import { db } from "@/vendor/firebase";
+import { db } from "@/lib/firebase";
 import {
   collection,
   deleteDoc,

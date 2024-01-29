@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/modules/auth/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 
 function Profile() {
   const { logout } = useAuth();
@@ -12,9 +13,9 @@ function Profile() {
   };
 
   return (
-    <button type="button" onClick={submit}>
+    <Button variant={"default"} onClick={submit} className="w-full mt-4">
       Logout
-    </button>
+    </Button>
   );
 }
 

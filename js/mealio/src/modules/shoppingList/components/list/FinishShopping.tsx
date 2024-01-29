@@ -1,7 +1,7 @@
 import { useStore } from "@/contexts/StoreContext";
 import { useMemo } from "react";
-import Button from "@/components/controls/Button";
 import { useCartService } from "@/modules/shoppingList/services/CartService";
+import { Button } from "@/components/ui/button";
 
 const FinishShopping: React.FC = () => {
   const { shoppingListItems } = useStore();
@@ -16,7 +16,7 @@ const FinishShopping: React.FC = () => {
   };
 
   return shoppingListItems.length ? (
-    <Button onClick={onClick} type="submit" disabled={!hasChecked}>
+    <Button onClick={onClick} disabled={!hasChecked} className="w-full mt-4">
       Finish
     </Button>
   ) : null;

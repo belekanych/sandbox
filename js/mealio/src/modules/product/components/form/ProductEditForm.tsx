@@ -1,13 +1,21 @@
-import Button from "@/components/controls/Button";
-import Fieldset from "@/components/form/Fieldset";
-import NumberInput from "@/components/form/NumberInput";
 import Product from "@/modules/product/entities/Product";
-import TextInput from "@/components/form/TextInput";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useProductService } from "@/modules/product/services/ProductService";
+import { Card } from "@/components/ui/card";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   product: Product;
@@ -24,12 +32,13 @@ const ProductEditForm: React.FC<Props> = (props) => {
 
   type FormData = z.infer<typeof schema>;
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
+  const form = useForm<FormData>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      name: props.product.name,
+      plan: props.product.plan,
+      left: props.product.left,
+    },
   });
 
   const { updateProduct } = useProductService();
@@ -43,29 +52,71 @@ const ProductEditForm: React.FC<Props> = (props) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(submit)}>
-      <Fieldset>
-        <TextInput
-          label="Name"
-          {...register("name")}
-          error={errors.name}
-          defaultValue={props.product.name}
-        />
-        <NumberInput
-          label="Plan"
-          {...register("plan", { valueAsNumber: true })}
-          error={errors.plan}
-          defaultValue={props.product.plan}
-        />
-        <NumberInput
-          label="Left"
-          {...register("left", { valueAsNumber: true })}
-          error={errors.left}
-          defaultValue={props.product.left}
-        />
-      </Fieldset>
-      <Button type="submit">Save</Button>
-    </form>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(submit)} className="space-y-4">
+        <Card className="p-4">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter name of the product"
+                    type="text"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>e.g. Milk, Bread or Coffee</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="plan"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Plan</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter plan here"
+                    type="number"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Minimum amount of product you should keep in storage.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="left"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Left</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter left here"
+                    type="number"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>How much do you still have?</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </Card>
+        <Button type="submit" className="w-full">
+          Save
+        </Button>
+      </form>
+    </Form>
   );
 };
 

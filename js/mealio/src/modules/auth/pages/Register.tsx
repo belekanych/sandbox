@@ -2,17 +2,27 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import Button from "@/components/controls/Button";
-import EmailInput from "@/components/form/EmailInput";
-import Fieldset from "@/components/form/Fieldset";
-import PasswordInput from "@/components/form/PasswordInput";
 import GuestLayout from "@/components/layout/GuestLayout";
 import { useAuth } from "@/modules/auth/contexts/AuthContext";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Link from "@/components/controls/Link";
+import SignInWithGoogle from "@/modules/auth/components/SignInWithGoogle";
+import { useTranslation } from "react-i18next";
 
 function Register() {
   const auth = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const schema = z
     .object({
@@ -27,45 +37,103 @@ function Register() {
 
   type FormData = z.infer<typeof schema>;
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
+  const form = useForm<FormData>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      email: "",
+      password: "",
+      passwordConfirmation: "",
+    },
   });
+
+  const onError = () => {
+    form.setError("email", {
+      type: "custom",
+      message: t("errors.auth.failed"),
+    });
+  };
 
   async function submit(data: FormData) {
     if (!auth) {
       return;
     }
 
-    await auth.signup(data.email, data.password);
-    navigate("/");
+    try {
+      await auth.signup(data.email, data.password);
+      navigate("/");
+    } catch {
+      onError();
+    }
   }
 
   return (
     <GuestLayout title="Register" footer={<Footer />}>
-      <form onSubmit={handleSubmit(submit)}>
-        <Fieldset>
-          <EmailInput
-            label="Email"
-            {...register("email")}
-            error={errors.email}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(submit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your email here"
+                    type="email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>This is your personal email.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <PasswordInput
-            label="Password"
-            {...register("password")}
-            error={errors.password}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your password here"
+                    type="password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>This is secret phrase.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <PasswordInput
-            label="Confirm password"
-            {...register("passwordConfirmation")}
-            error={errors.passwordConfirmation}
+          <FormField
+            control={form.control}
+            name="passwordConfirmation"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm password</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Re-enter your password here"
+                    type="password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Re-enter your password here to make sure it is the same.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </Fieldset>
-        <Button type="submit">Register</Button>
-      </form>
+          <Button type="submit" className="w-full">
+            Register
+          </Button>
+        </form>
+      </Form>
+      <div className="border-t mt-4 pt-4">
+        <SignInWithGoogle onError={onError} />
+      </div>
     </GuestLayout>
   );
 }
@@ -75,7 +143,10 @@ export default Register;
 function Footer() {
   return (
     <>
-      Have an account? <Link to="/login">Login</Link>
+      <span className="text-sm">Have an account?</span>
+      <Button variant={"link"} asChild>
+        <Link to="/login">Login</Link>
+      </Button>
     </>
   );
 }
