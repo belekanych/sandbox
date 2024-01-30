@@ -15,7 +15,7 @@ const ShoppingCartList: React.FC<Props> = () => {
   }, [shoppingListItems]);
 
   return shoppingListItems.length ? (
-    <ul>
+    <ul className="space-y-4">
       {sortedItems.map((item) => (
         <ShoppingCartListItem key={item.id} item={item} />
       ))}

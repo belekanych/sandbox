@@ -19,7 +19,15 @@ i18next
             },
           },
           labels: {
-            amountLabel: "{{amount, number}} {{type}}",
+            amountLabel: "{{amount, number}} {{unit}}",
+            units: {
+              g: "g",
+              kg: "kg",
+              ml: "ml",
+              l: "l",
+              pcs: "piece",
+              pack: "pack",
+            },
           },
         },
       },
@@ -27,6 +35,22 @@ i18next
         translation: {
           actions: {
             login: "Увійти",
+          },
+          errors: {
+            auth: {
+              failed: "Ел. пошта або пароль невірні.",
+            },
+          },
+          labels: {
+            amountLabel: "{{amount, number}} {{unit}}",
+            units: {
+              g: "г",
+              kg: "кг",
+              ml: "мл",
+              l: "л",
+              pcs: "шт",
+              pack: "уп",
+            },
           },
         },
       },

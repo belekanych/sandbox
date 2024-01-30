@@ -16,6 +16,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import ProductUnit from "@/modules/product/entities/ProductUnit";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   product: Product;
@@ -23,11 +32,13 @@ type Props = {
 
 const ProductEditForm: React.FC<Props> = (props) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const schema = z.object({
     name: z.string().min(1).max(32),
-    plan: z.number().min(1).max(10000),
-    left: z.number().min(0).max(10000),
+    min: z.coerce.number().min(1).max(10000),
+    remained: z.coerce.number().min(0).max(10000),
+    unit: z.string(),
   });
 
   type FormData = z.infer<typeof schema>;
@@ -36,8 +47,9 @@ const ProductEditForm: React.FC<Props> = (props) => {
     resolver: zodResolver(schema),
     defaultValues: {
       name: props.product.name,
-      plan: props.product.plan,
-      left: props.product.left,
+      min: props.product.min,
+      remained: props.product.remained,
+      unit: props.product.unit,
     },
   });
 
@@ -51,10 +63,20 @@ const ProductEditForm: React.FC<Props> = (props) => {
     navigate("/products");
   }
 
+  const units = [
+    ProductUnit.g,
+    ProductUnit.kg,
+    ProductUnit.ml,
+    ProductUnit.l,
+    ProductUnit.pcs,
+    ProductUnit.pack,
+  ];
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)} className="space-y-4">
-        <Card className="p-4">
+        <Card className="p-4 space-y-4">
+          {/* NAME */}
           <FormField
             control={form.control}
             name="name"
@@ -73,15 +95,49 @@ const ProductEditForm: React.FC<Props> = (props) => {
               </FormItem>
             )}
           />
+
+          {/* UNITS */}
           <FormField
             control={form.control}
-            name="plan"
+            name="unit"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Plan</FormLabel>
+                <FormLabel>Units</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a unit" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {units.map((unit) => (
+                      <SelectItem value={unit} key={unit}>
+                        {t(`labels.units.${unit}`)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormDescription>
+                  How do you measure the product?
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* MIN */}
+          <FormField
+            control={form.control}
+            name="min"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Minimum</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter plan here"
+                    placeholder="Enter min here"
                     type="number"
                     {...field}
                   />
@@ -93,15 +149,17 @@ const ProductEditForm: React.FC<Props> = (props) => {
               </FormItem>
             )}
           />
+
+          {/* REMAINED */}
           <FormField
             control={form.control}
-            name="left"
+            name="remained"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Left</FormLabel>
+                <FormLabel>Remained</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter left here"
+                    placeholder="Enter remained here"
                     type="number"
                     {...field}
                   />

@@ -1,9 +1,12 @@
+import ProductUnit from "@/modules/product/entities/ProductUnit";
+
 type Product = {
   id: string;
   name: string;
-  plan: number;
-  left: number;
-  userId: string;
+  min: number;
+  remained: number;
+  listId: string;
+  unit: ProductUnit;
 };
 
 export default Product;

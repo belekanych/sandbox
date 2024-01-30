@@ -2,8 +2,8 @@ import Product from "@/modules/product/entities/Product";
 import React, { useContext, useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
 import { query, where, onSnapshot, collection } from "firebase/firestore";
-import { useAuth } from "@/modules/auth/contexts/AuthContext";
 import ShoppingListItem from "@/modules/shoppingList/entities/ShoppingListItem";
+import { useList } from "@/modules/lists/contexts/ListContext";
 
 type StoreContextType = {
   products: Product[];
@@ -28,16 +28,16 @@ export const StoreProvider: React.FC<Props> = ({ children }) => {
   const [shoppingListItems, setShoppingListItems] = useState<
     ShoppingListItem[]
   >([]);
-  const { currentUser } = useAuth();
+  const { activeList } = useList();
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!activeList) {
       return;
     }
 
     const productQuery = query(
       collection(db, "products"),
-      where("userId", "==", currentUser.uid)
+      where("listId", "==", activeList.id)
     );
 
     const unsubscribe = onSnapshot(productQuery, (querySnapshot) => {
@@ -53,16 +53,16 @@ export const StoreProvider: React.FC<Props> = ({ children }) => {
     return () => {
       unsubscribe();
     };
-  }, [currentUser]);
+  }, [activeList]);
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!activeList) {
       return;
     }
 
     const shoppingQuery = query(
       collection(db, "shoppingLists"),
-      where("userId", "==", currentUser.uid)
+      where("listId", "==", activeList.id)
     );
 
     const unsubscribe = onSnapshot(shoppingQuery, (querySnapshot) => {
@@ -78,7 +78,7 @@ export const StoreProvider: React.FC<Props> = ({ children }) => {
     return () => {
       unsubscribe();
     };
-  }, [currentUser]);
+  }, [activeList]);
 
   return (
     <StoreContext.Provider value={{ products, shoppingListItems }}>

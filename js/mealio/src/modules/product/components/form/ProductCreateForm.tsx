@@ -16,6 +16,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import ProductUnit from "@/modules/product/entities/ProductUnit";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   //
@@ -23,11 +32,13 @@ type Props = {
 
 const ProductCreateForm: React.FC<Props> = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const schema = z.object({
     name: z.string().min(1).max(32),
-    plan: z.number().min(1).max(10000),
-    left: z.number().min(0).max(10000),
+    min: z.coerce.number().min(1).max(10000),
+    remained: z.coerce.number().min(0).max(10000),
+    unit: z.string(),
   });
 
   type FormData = z.infer<typeof schema>;
@@ -36,8 +47,8 @@ const ProductCreateForm: React.FC<Props> = () => {
     resolver: zodResolver(schema),
     defaultValues: {
       name: "",
-      plan: 0,
-      left: 0,
+      min: 0,
+      remained: 0,
     },
   });
 
@@ -48,10 +59,20 @@ const ProductCreateForm: React.FC<Props> = () => {
     navigate("/products");
   }
 
+  const units = [
+    ProductUnit.g,
+    ProductUnit.kg,
+    ProductUnit.ml,
+    ProductUnit.l,
+    ProductUnit.pcs,
+    ProductUnit.pack,
+  ];
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)} className="space-y-4">
-        <Card className="p-4">
+        <Card className="p-4 space-y-4">
+          {/* NAME */}
           <FormField
             control={form.control}
             name="name"
@@ -70,35 +91,71 @@ const ProductCreateForm: React.FC<Props> = () => {
               </FormItem>
             )}
           />
+
+          {/* UNITS */}
           <FormField
             control={form.control}
-            name="plan"
+            name="unit"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Plan</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter plan here"
-                    type="number"
-                    {...field}
-                  />
-                </FormControl>
+                <FormLabel>Units</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a unit" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {units.map((unit) => (
+                      <SelectItem value={unit} key={unit}>
+                        {t(`labels.units.${unit}`)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormDescription>
-                  Minimum amount of product you should keep in storage.
+                  How do you measure the product?
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+
+          {/* MIN */}
           <FormField
             control={form.control}
-            name="left"
+            name="min"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Left</FormLabel>
+                <FormLabel>Minimum</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter left here"
+                    placeholder="Enter min here"
+                    type="number"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Minimum amount of product you want keep in the storage
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* REMAINED */}
+          <FormField
+            control={form.control}
+            name="remained"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Remained</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter remained here"
                     type="number"
                     {...field}
                   />

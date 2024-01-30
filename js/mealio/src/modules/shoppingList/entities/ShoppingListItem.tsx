@@ -3,7 +3,6 @@ type ShoppingListItem = {
   productId: string;
   checked: boolean;
   amount: number;
-  amountType: string;
 };
 
 export default ShoppingListItem;

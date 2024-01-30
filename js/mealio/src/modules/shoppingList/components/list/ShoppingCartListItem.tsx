@@ -2,7 +2,7 @@ import { db } from "@/lib/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import ShoppingListItem from "@/modules/shoppingList/entities/ShoppingListItem";
 import { useStore } from "@/contexts/StoreContext";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -26,6 +26,10 @@ const ShoppingCartListItem: React.FC<Props> = ({ item }) => {
 
   const { products } = useStore();
 
+  const product = useMemo(() => {
+    return products.filter((product) => product.id === item.productId)[0];
+  }, [products, item]);
+
   return (
     <Card className="items-center flex space-x-4 p-4">
       <Checkbox
@@ -34,17 +38,17 @@ const ShoppingCartListItem: React.FC<Props> = ({ item }) => {
         onCheckedChange={handleChange}
         className="scale-110"
       />
-      <div className="grid gap-1.5 leading-none">
+      <div className={`grid gap-1.5 leading-none ${checked && "line-through"}`}>
         <label
           htmlFor={item.productId}
           className="text-sm font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
-          {products.filter((product) => product.id === item.productId)[0]?.name}
+          {product.name}
         </label>
         <p className="text-sm text-muted-foreground">
           {t("labels.amountLabel", {
             amount: item.amount,
-            type: item.amountType,
+            unit: t(`labels.units.${product.unit}`),
           })}
         </p>
       </div>

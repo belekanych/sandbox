@@ -47,10 +47,10 @@
       ],
     "id": "/?source=pwa",
     "start_url": "/?source=pwa",
-    "background_color": "#111414",
+    "background_color": "#ffffff",
     "display": "standalone",
     "scope": "/",
-    "theme_color": "#111414",
+    "theme_color": "#ffffff",
     "description": "An app created to manage your food at home.",
     "screenshots": [
         {

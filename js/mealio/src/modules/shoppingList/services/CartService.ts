@@ -1,4 +1,3 @@
-import { useAuth } from "@/modules/auth/contexts/AuthContext";
 import { PRODUCT_COLLECTION } from "@/modules/product/entities/Product";
 import ShoppingListItem, {
   SHOPPING_LIST_ITEM_COLLECTION,
@@ -14,15 +13,16 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { useList } from "@/modules/lists/contexts/ListContext";
 
 export const useCartService = () => {
-  const { currentUser } = useAuth();
+  const { activeList } = useList();
 
   const finishShopping = async () => {
     const result = await getDocs(
       query(
         collection(db, SHOPPING_LIST_ITEM_COLLECTION),
-        where("userId", "==", currentUser?.uid),
+        where("listId", "==", activeList?.id),
         where("checked", "==", true)
       )
     );
@@ -40,7 +40,7 @@ export const useCartService = () => {
       }
 
       await updateDoc(doc(db, [PRODUCT_COLLECTION, product.id].join("/")), {
-        left: product.data()?.left + item.amount,
+        remained: product.data()?.remained + item.amount,
       });
 
       await deleteDoc(

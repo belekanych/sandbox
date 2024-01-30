@@ -1,34 +1,17 @@
 import { useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import ProductEditForm from "@/modules/product/components/form/ProductEditForm";
-import Product from "@/modules/product/entities/Product";
 import ProductDeleteForm from "@/modules/product/components/form/ProductDeleteForm";
+import { useStore } from "@/contexts/StoreContext";
 
 function Edit() {
   const { id } = useParams();
+  const { products } = useStore();
 
-  const [product, setProduct] = useState<Product>();
-
-  const loadData = async () => {
-    const result = await getDoc(doc(db, "products", id!));
-
-    if (result.exists()) {
-      setProduct({
-        id: result.id,
-        name: result.data().name,
-        plan: result.data().plan,
-        left: result.data().left,
-        userId: result.data().userId,
-      });
-    }
-  };
-
-  useEffect(() => {
-    loadData();
-  });
+  const product = useMemo(() => {
+    return products.filter((product) => product.id === id)[0];
+  }, [id, products]);
 
   return (
     <MainLayout title="Products > Edit">

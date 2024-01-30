@@ -1,4 +1,3 @@
-import { useAuth } from "@/modules/auth/contexts/AuthContext";
 import Product, {
   PRODUCT_COLLECTION,
 } from "@/modules/product/entities/Product";
@@ -16,16 +15,17 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { useList } from "@/modules/lists/contexts/ListContext";
 
 export const useProductService = () => {
-  const { currentUser } = useAuth();
+  const { activeList } = useList();
 
   const storeProduct = async (data: Product) => {
-    const userId = currentUser?.uid;
+    const listId = activeList?.id;
 
     const result = await addDoc(collection(db, PRODUCT_COLLECTION), {
       ...data,
-      userId,
+      listId,
     });
 
     return handleShoppingCart({
@@ -47,13 +47,13 @@ export const useProductService = () => {
 
     return handleShoppingCart({
       ...product,
-      plan: 0,
-      left: 1,
+      min: 0,
+      remained: 1,
     });
   };
 
   const handleShoppingCart = async (product: Product) => {
-    const difference = product.left - product.plan;
+    const difference = product.remained - product.min;
 
     const productId = product.id;
 
@@ -77,10 +77,9 @@ export const useProductService = () => {
 
     return await addDoc(collection(db, SHOPPING_LIST_ITEM_COLLECTION), {
       productId,
-      userId: currentUser?.uid,
+      listId: activeList?.id,
       checked: false,
       amount: difference * -1,
-      amountType: "шт",
     });
   };
 
@@ -90,7 +89,7 @@ export const useProductService = () => {
     const result = await getDocs(
       query(
         collection(db, SHOPPING_LIST_ITEM_COLLECTION),
-        where("userId", "==", currentUser?.uid),
+        where("listId", "==", activeList?.id),
         where("productId", "==", productId)
       )
     );

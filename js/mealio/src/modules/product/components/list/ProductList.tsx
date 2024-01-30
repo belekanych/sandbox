@@ -9,7 +9,7 @@ const ProductList: React.FC<Props> = () => {
   const { products } = useStore();
 
   return products.length ? (
-    <ul>
+    <ul className="space-y-4">
       {products.map((product) => (
         <ProductListItem key={product.id} product={product} />
       ))}
