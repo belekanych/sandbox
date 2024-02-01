@@ -32,6 +32,8 @@ export const StoreProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (!activeList) {
+      setProducts([]);
+
       return;
     }
 
@@ -57,6 +59,8 @@ export const StoreProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (!activeList) {
+      setShoppingListItems([]);
+
       return;
     }
 

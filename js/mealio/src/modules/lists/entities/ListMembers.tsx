@@ -1,4 +1,5 @@
 type ListMember = {
+  id: string;
   listId: string;
   userId: string;
 };

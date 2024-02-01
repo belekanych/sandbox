@@ -18,11 +18,14 @@ import { Button } from "@/components/ui/button";
 import Link from "@/components/controls/Link";
 import SignInWithGoogle from "@/modules/auth/components/SignInWithGoogle";
 import { useTranslation } from "react-i18next";
+import { useUserService } from "@/modules/auth/services/UserService";
+import User from "@/modules/auth/entities/User";
 
 function Register() {
   const auth = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { storeUser } = useUserService();
 
   const schema = z
     .object({
@@ -59,7 +62,13 @@ function Register() {
     }
 
     try {
-      await auth.signup(data.email, data.password);
+      const result = await auth.signup(data.email, data.password);
+
+      await storeUser({
+        uid: result.user.uid,
+        email: result.user.email,
+      } as User);
+
       navigate("/");
     } catch {
       onError();

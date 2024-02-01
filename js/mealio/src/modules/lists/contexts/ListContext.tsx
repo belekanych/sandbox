@@ -34,6 +34,8 @@ export const ListProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (!currentUser) {
+      setListMembers([]);
+
       return;
     }
 
@@ -45,6 +47,7 @@ export const ListProvider: React.FC<Props> = ({ children }) => {
     const unsubscribe = onSnapshot(listMembersQuery, (querySnapshot) => {
       const items = querySnapshot.docs.map((doc) => {
         return {
+          id: doc.id,
           ...doc.data(),
         } as ListMember;
       });
@@ -58,6 +61,8 @@ export const ListProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (!currentUser || !listMembers.length) {
+      setLists([]);
+
       return;
     }
 
@@ -86,6 +91,11 @@ export const ListProvider: React.FC<Props> = ({ children }) => {
   }, [currentUser, listMembers]);
 
   useEffect(() => {
+    if (lists.length === 0) {
+      setActiveList(undefined);
+      return;
+    }
+
     if (activeList || lists.length === 0) {
       return;
     }
