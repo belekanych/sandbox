@@ -11,11 +11,13 @@ type ListContextType = {
   lists: List[];
   listMembers: ListMember[];
   activeList?: List;
+  setActiveList: React.Dispatch<React.SetStateAction<List | undefined>>;
 };
 
 const ListContext = React.createContext<ListContextType>({
   lists: [],
   listMembers: [],
+  setActiveList: () => {},
 });
 
 export function useList() {
@@ -104,7 +106,9 @@ export const ListProvider: React.FC<Props> = ({ children }) => {
   }, [lists, activeList]);
 
   return (
-    <ListContext.Provider value={{ lists, listMembers, activeList }}>
+    <ListContext.Provider
+      value={{ lists, listMembers, activeList, setActiveList }}
+    >
       {children}
     </ListContext.Provider>
   );
