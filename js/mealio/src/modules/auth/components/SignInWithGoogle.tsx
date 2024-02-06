@@ -1,23 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/firebase";
-import { useAuth } from "@/modules/auth/contexts/AuthContext";
 import User, { USER_COLLECTION } from "@/modules/auth/entities/User";
-import { useUserService } from "@/modules/auth/services/UserService";
+import useAuthService from "@/modules/auth/services/AuthService";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 export default function SignInWithGoogle(props: { onError: () => void }) {
-  const auth = useAuth();
   const navigate = useNavigate();
-  const { storeUser } = useUserService();
+  const { storeUser, signInWithGoogle } = useAuthService();
 
   async function submitGoogle() {
-    if (!auth) {
-      return;
-    }
-
     try {
-      const authResult = await auth.signInWithGoogle();
+      const authResult = await signInWithGoogle();
 
       const userResult = await getDocs(
         query(

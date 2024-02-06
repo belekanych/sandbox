@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import GuestLayout from "@/components/layout/GuestLayout";
-import { useAuth } from "@/modules/auth/contexts/AuthContext";
 import Link from "@/components/controls/Link";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,11 +17,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import SignInWithGoogle from "@/modules/auth/components/SignInWithGoogle";
+import useAuthService from "@/modules/auth/services/AuthService";
 
 function Login() {
-  const auth = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { login } = useAuthService();
 
   const schema = z.object({
     email: z.string().email(),
@@ -47,12 +47,8 @@ function Login() {
   };
 
   async function submit(data: FormData) {
-    if (!auth) {
-      return;
-    }
-
     try {
-      await auth.login(data.email, data.password);
+      await login(data.email, data.password);
       navigate("/");
     } catch {
       onError();

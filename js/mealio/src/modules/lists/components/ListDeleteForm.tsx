@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/drawer";
 import List from "@/modules/lists/entities/List";
 import { useListService } from "@/modules/lists/services/ListService";
+import { TrashIcon } from "@radix-ui/react-icons";
 
 type Props = {
   list: List;
@@ -30,11 +31,9 @@ const ListDeleteForm: React.FC<Props> = (props) => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <div className="my-4 border-t py-4">
-          <Button className="w-full" variant={"destructive"}>
-            Delete
-          </Button>
-        </div>
+        <Button className="rounded-full" variant={"destructive"}>
+          <TrashIcon />
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">

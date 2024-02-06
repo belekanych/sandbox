@@ -14,13 +14,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { useList } from "@/modules/lists/contexts/ListContext";
+import {
+  selectActiveList,
+  selectLists,
+  setActiveList,
+} from "@/modules/lists/store";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export default function ProductListSelect() {
-  const { activeList, lists, setActiveList } = useList();
+  const dispatch = useAppDispatch();
+  const activeList = useAppSelector(selectActiveList);
+  const lists = useAppSelector(selectLists);
 
   const schema = z.object({
     list: z.string().optional(),
@@ -32,7 +39,7 @@ export default function ProductListSelect() {
     resolver: zodResolver(schema),
   });
 
-  return (
+  return lists.length ? (
     <Form {...form}>
       <FormField
         control={form.control}
@@ -43,7 +50,9 @@ export default function ProductListSelect() {
             <Select
               onValueChange={(value) => {
                 field.onChange(value);
-                setActiveList(lists.filter((list) => list.id === value)[0]);
+                dispatch(
+                  setActiveList(lists.filter((list) => list.id === value)[0])
+                );
               }}
               value={activeList?.id}
             >
@@ -66,5 +75,5 @@ export default function ProductListSelect() {
       />
       <Separator className="my-4" />
     </Form>
-  );
+  ) : null;
 }

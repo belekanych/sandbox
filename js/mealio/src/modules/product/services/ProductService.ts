@@ -11,14 +11,21 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  onSnapshot,
   query,
   updateDoc,
   where,
 } from "firebase/firestore";
-import { useList } from "@/modules/lists/contexts/ListContext";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectActiveList, selectListMembers } from "@/modules/lists/store";
+import { useEffect } from "react";
+import { setProducts } from "@/modules/product/store";
 
 export const useProductService = () => {
-  const { activeList } = useList();
+  const dispatch = useAppDispatch();
+  const listMembers = useAppSelector(selectListMembers);
+
+  const activeList = useAppSelector(selectActiveList);
 
   const storeProduct = async (data: Product) => {
     const listId = activeList?.id;
@@ -101,6 +108,37 @@ export const useProductService = () => {
           id: result.docs[0].id,
         } as ShoppingListItem);
   };
+
+  useEffect(() => {
+    if (!listMembers.length) {
+      dispatch(setProducts([]));
+
+      return;
+    }
+
+    const productQuery = query(
+      collection(db, "products"),
+      where(
+        "listId",
+        "in",
+        listMembers.map((item) => item.listId)
+      )
+    );
+
+    const unsubscribe = onSnapshot(productQuery, (querySnapshot) => {
+      const items = querySnapshot.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        } as Product;
+      });
+      dispatch(setProducts(items));
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [listMembers]);
 
   return {
     storeProduct,

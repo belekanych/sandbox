@@ -1,12 +1,13 @@
 import { db } from "@/lib/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import ShoppingListItem from "@/modules/shoppingList/entities/ShoppingListItem";
-import { useStore } from "@/contexts/StoreContext";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";
+import { useAppSelector } from "@/store/hooks";
+import { selectProducts } from "@/modules/product/store";
 
 interface Props {
   item: ShoppingListItem;
@@ -15,6 +16,7 @@ interface Props {
 const ShoppingCartListItem: React.FC<Props> = ({ item }) => {
   const { t } = useTranslation();
   const [checked, setChecked] = useState(item.checked);
+  const products = useAppSelector(selectProducts);
 
   async function handleChange(checked: CheckedState) {
     setChecked(!!checked);
@@ -23,8 +25,6 @@ const ShoppingCartListItem: React.FC<Props> = ({ item }) => {
       checked: !!checked,
     });
   }
-
-  const { products } = useStore();
 
   const product = useMemo(() => {
     return products.filter((product) => product.id === item.productId)[0];

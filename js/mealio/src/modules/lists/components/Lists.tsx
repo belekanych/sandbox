@@ -7,10 +7,11 @@ import {
 } from "@/components/ui/card";
 import CreateListForm from "@/modules/lists/components/CreateListForm";
 import ListItem from "@/modules/lists/components/ListItem";
-import { useList } from "@/modules/lists/contexts/ListContext";
+import { selectLists } from "@/modules/lists/store";
+import { useAppSelector } from "@/store/hooks";
 
 const Lists: React.FC = () => {
-  const { lists } = useList();
+  const lists = useAppSelector(selectLists);
 
   return (
     <Card>
@@ -29,7 +30,7 @@ const Lists: React.FC = () => {
             ))}
           </div>
         ) : (
-          <span>No items</span>
+          <span>No lists yet</span>
         )}
       </CardContent>
     </Card>

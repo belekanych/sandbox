@@ -9,20 +9,29 @@ import {
   doc,
   getDoc,
   getDocs,
+  onSnapshot,
   query,
   updateDoc,
   where,
 } from "firebase/firestore";
-import { useList } from "@/modules/lists/contexts/ListContext";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectListMembers } from "@/modules/lists/store";
+import { useEffect } from "react";
+import { setShoppingCartItems } from "@/modules/shoppingList/store";
 
 export const useCartService = () => {
-  const { activeList } = useList();
+  const dispatch = useAppDispatch();
+  const listMembers = useAppSelector(selectListMembers);
 
   const finishShopping = async () => {
     const result = await getDocs(
       query(
         collection(db, SHOPPING_LIST_ITEM_COLLECTION),
-        where("listId", "==", activeList?.id),
+        where(
+          "listId",
+          "in",
+          listMembers.map((item) => item.listId)
+        ),
         where("checked", "==", true)
       )
     );
@@ -48,6 +57,37 @@ export const useCartService = () => {
       );
     });
   };
+
+  useEffect(() => {
+    if (!listMembers.length) {
+      dispatch(setShoppingCartItems([]));
+
+      return;
+    }
+
+    const shoppingQuery = query(
+      collection(db, "shoppingLists"),
+      where(
+        "listId",
+        "in",
+        listMembers.map((item) => item.listId)
+      )
+    );
+
+    const unsubscribe = onSnapshot(shoppingQuery, (querySnapshot) => {
+      const items = querySnapshot.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        } as ShoppingListItem;
+      });
+      dispatch(setShoppingCartItems(items));
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [listMembers]);
 
   return {
     finishShopping,

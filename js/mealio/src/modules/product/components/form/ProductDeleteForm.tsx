@@ -12,6 +12,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { TrashIcon } from "@radix-ui/react-icons";
 
 type Props = {
   product: Product;
@@ -30,11 +31,9 @@ const ProductDeleteForm: React.FC<Props> = (props) => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <div className="my-4 border-t py-4">
-          <Button className="w-full" variant={"destructive"}>
-            Delete
-          </Button>
-        </div>
+        <Button className="rounded-full" variant={"destructive"}>
+          <TrashIcon />
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">

@@ -50,7 +50,7 @@ const ListEditForm: React.FC<Props> = (props) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)} className="space-y-4">
-        <Card className="p-4 space-y-4">
+        <Card className="p-6 space-y-4">
           <FormField
             control={form.control}
             name="name"

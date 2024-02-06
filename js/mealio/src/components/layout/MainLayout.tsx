@@ -8,9 +8,15 @@ import { useLocation } from "react-router-dom";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
+  header?: React.ReactElement;
 }
 
-const MainLayout: React.FC<Props> = ({ title, children, ...restProps }) => {
+const MainLayout: React.FC<Props> = ({
+  title,
+  header,
+  children,
+  ...restProps
+}) => {
   const location = useLocation();
 
   const navItems = [
@@ -38,8 +44,9 @@ const MainLayout: React.FC<Props> = ({ title, children, ...restProps }) => {
 
   return (
     <div className="min-h-screen min-w-full relative" {...restProps}>
-      <header className="w-full text-2xl font-bold pt-4 px-4 pb-0">
+      <header className="w-full text-2xl font-bold pt-4 px-4 pb-0 flex justify-between">
         <h1>{title}</h1>
+        {header ? header : null}
       </header>
       <main className="p-4">{children}</main>
       <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 flex px-4 bg-card text-muted-foreground shadow rounded-full">

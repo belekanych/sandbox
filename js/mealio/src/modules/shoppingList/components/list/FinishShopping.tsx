@@ -1,10 +1,12 @@
-import { useStore } from "@/contexts/StoreContext";
 import { useMemo } from "react";
 import { useCartService } from "@/modules/shoppingList/services/CartService";
 import { Button } from "@/components/ui/button";
+import { CheckIcon } from "@radix-ui/react-icons";
+import { useAppSelector } from "@/store/hooks";
+import { selectShoppingCartItems } from "@/modules/shoppingList/store";
 
-const FinishShopping: React.FC = () => {
-  const { shoppingListItems } = useStore();
+export default function FinishShopping() {
+  const shoppingListItems = useAppSelector(selectShoppingCartItems);
 
   const hasChecked = useMemo<boolean>(() => {
     return shoppingListItems.filter((item) => item.checked).length > 0;
@@ -15,11 +17,9 @@ const FinishShopping: React.FC = () => {
     finishShopping();
   };
 
-  return shoppingListItems.length ? (
-    <Button onClick={onClick} disabled={!hasChecked} className="w-full mt-4">
-      Finish
+  return (
+    <Button onClick={onClick} disabled={!hasChecked} className="rounded-full">
+      <CheckIcon />
     </Button>
-  ) : null;
-};
-
-export default FinishShopping;
+  );
+}

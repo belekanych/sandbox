@@ -1,25 +1,28 @@
 import MainLayout from "@/components/layout/MainLayout";
 import { Card } from "@/components/ui/card";
-import { useAuth } from "@/modules/auth/contexts/AuthContext";
+import { selectCurrentUser } from "@/modules/auth/store";
 import Lists from "@/modules/lists/components/Lists";
 import Logout from "@/modules/profile/components/Logout";
+import { useAppSelector } from "@/store/hooks";
 
-function Profile() {
-  const { currentUser } = useAuth();
+export default function Profile() {
+  const currentUser = useAppSelector(selectCurrentUser);
 
   return (
-    <MainLayout title="Profile">
+    <MainLayout title="Profile" header={<Logout />}>
       {currentUser ? (
         <div className="space-y-4">
           <Card>
             <div className="flex items-center p-4">
               {currentUser.photoURL ? (
-                <img src={currentUser.photoURL} className="rounded-full" />
+                <img src={currentUser.photoURL} className="rounded-full mr-4" />
               ) : null}
-              <div className="pl-4">
-                <p className="font-bold text-md mb-2">
-                  {currentUser.displayName}
-                </p>
+              <div>
+                {currentUser.displayName ? (
+                  <p className="font-bold text-md mb-2">
+                    {currentUser.displayName}
+                  </p>
+                ) : null}
                 <p className="text-sm text-muted-foreground">
                   {currentUser.email}
                 </p>
@@ -29,9 +32,6 @@ function Profile() {
           <Lists />
         </div>
       ) : null}
-      <Logout />
     </MainLayout>
   );
 }
-
-export default Profile;

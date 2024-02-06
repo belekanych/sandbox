@@ -3,7 +3,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import GuestLayout from "@/components/layout/GuestLayout";
-import { useAuth } from "@/modules/auth/contexts/AuthContext";
 import {
   Form,
   FormControl,
@@ -18,14 +17,13 @@ import { Button } from "@/components/ui/button";
 import Link from "@/components/controls/Link";
 import SignInWithGoogle from "@/modules/auth/components/SignInWithGoogle";
 import { useTranslation } from "react-i18next";
-import { useUserService } from "@/modules/auth/services/UserService";
 import User from "@/modules/auth/entities/User";
+import useAuthService from "@/modules/auth/services/AuthService";
 
 function Register() {
-  const auth = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { storeUser } = useUserService();
+  const { storeUser, signup } = useAuthService();
 
   const schema = z
     .object({
@@ -57,12 +55,8 @@ function Register() {
   };
 
   async function submit(data: FormData) {
-    if (!auth) {
-      return;
-    }
-
     try {
-      const result = await auth.signup(data.email, data.password);
+      const result = await signup(data.email, data.password);
 
       await storeUser({
         uid: result.user.uid,

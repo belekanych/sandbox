@@ -4,9 +4,8 @@ import ShoppingCartList from "@/modules/shoppingList/components/list/ShoppingCar
 
 function List() {
   return (
-    <MainLayout title="Shopping Cart">
+    <MainLayout title="Shopping Cart" header={<FinishShopping />}>
       <ShoppingCartList />
-      <FinishShopping />
     </MainLayout>
   );
 }

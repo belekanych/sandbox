@@ -1,10 +1,16 @@
 import { Outlet, Navigate } from "react-router-dom";
-import { useAuth } from "@/modules/auth/contexts/AuthContext";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/lib/firebase";
+import Loading from "@/modules/auth/pages/Loading";
 
 export const AuthRoute = () => {
-  const { currentUser } = useAuth();
+  const [user, loading] = useAuthState(auth);
 
-  if (!currentUser) {
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (!user) {
     return <Navigate to={"/login"} />;
   }
 
@@ -12,9 +18,13 @@ export const AuthRoute = () => {
 };
 
 export const GuestRoute = () => {
-  const { currentUser } = useAuth();
+  const [user, loading] = useAuthState(auth);
 
-  if (currentUser) {
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (user) {
     return <Navigate to={"/profile"} />;
   }
 

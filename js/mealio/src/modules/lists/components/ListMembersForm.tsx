@@ -86,7 +86,7 @@ const ListMembersForm: React.FC<Props> = (props) => {
   };
 
   return (
-    <Card className="mt-4">
+    <Card className="mb-4">
       <CardHeader>
         <CardTitle className="relative">
           Members <ListMemberAttachForm list={props.list} />

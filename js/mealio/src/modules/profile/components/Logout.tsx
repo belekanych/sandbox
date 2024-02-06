@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/modules/auth/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import { ExitIcon } from "@radix-ui/react-icons";
+import useAuthService from "@/modules/auth/services/AuthService";
 
-function Profile() {
-  const { logout } = useAuth();
+export default function Profile() {
   const navigate = useNavigate();
+  const { logout } = useAuthService();
 
   const submit = async () => {
     await logout();
@@ -13,10 +14,8 @@ function Profile() {
   };
 
   return (
-    <Button variant={"default"} onClick={submit} className="w-full mt-4">
-      Logout
+    <Button variant={"default"} onClick={submit} className="rounded-full">
+      <ExitIcon />
     </Button>
   );
 }
-
-export default Profile;
